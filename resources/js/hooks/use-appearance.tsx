@@ -10,7 +10,7 @@ const prefersDark = () => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
 };
 
-const setCookie = (name: string, value: string, days = 365) => {
+const setCookieAppearance = (name: string, value: string, days = 365) => {
     if (typeof document === 'undefined') {
         return;
     }
@@ -57,6 +57,7 @@ export function useAppearance() {
         localStorage.setItem('appearance', mode);
 
         // Store in cookie for SSR...
+        // @ts-ignore
         setCookie('appearance', mode);
 
         applyTheme(mode);
@@ -64,7 +65,7 @@ export function useAppearance() {
 
     useEffect(() => {
         const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
-        updateAppearance(savedAppearance || 'system');
+        updateAppearance(savedAppearance ?? 'system');
 
         return () => mediaQuery()?.removeEventListener('change', handleSystemThemeChange);
     }, [updateAppearance]);
