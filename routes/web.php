@@ -10,6 +10,9 @@ Route::get('/projects', fn () => Inertia::render('Projects/Index'))->name('proje
 Route::get('/projects/{slug}', fn ($slug) => Inertia::render('Projects/Show', ['slug' => $slug]))
     ->name('projects.show');
 
+Route::get('/skills/{slug}', fn ($slug) => Inertia::render('Skills/Show', ['slug' => $slug]))
+    ->name('skills.show');
+
 Route::get('/competences', fn () => Inertia::render('Competences'))->name('competences');
 
 // 👇 nouvelles

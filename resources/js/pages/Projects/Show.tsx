@@ -17,6 +17,7 @@ import {
     CardContent,
 } from '@mui/material';
 import { projects as ALL_PROJECTS, type Project } from '@/data/projects';
+import { skills } from '@/data/skills';
 
 type PageProps = {
     slug?: string;
@@ -83,7 +84,12 @@ export default function Show() {
                 </Grid>
             </Grid>
 
-            {/* Highlights */}
+            {/* Compétences mobilisées */}
+            <Stack mt={4} spacing={1.5}>
+                <Typography variant="overline">Compétences mobilisées</Typography>
+                <SkillsForProject slug={project.slug} />
+            </Stack>
+
             <Stack mt={4} spacing={1.5}>
                 <Typography variant="overline">Points saillants</Typography>
                 <Stack component="ul" spacing={0.5} pl={2}>
@@ -157,5 +163,31 @@ export default function Show() {
                 </Stack>
             )}
         </Container>
+    );
+}
+
+
+function SkillsForProject({ slug }: { slug: string }) {
+    // Affiche les compétences dont relatedProjects contient ce slug
+    
+    const s = skills.filter((sk: any) => (sk.relatedProjects || []).includes(slug));
+
+    if (!s.length) {
+        return <Typography variant="body2" color="text.secondary">À relier dans data/skills.ts (relatedProjects).</Typography>;
+    }
+    return (
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+            {s.map((sk: any) => (
+                <Chip
+                    key={sk.slug}
+                    label={sk.name}
+                    component={Link as any}
+                    href={`/skills/${sk.slug}`}
+                    clickable
+                    variant="outlined"
+                    size="small"
+                />
+            ))}
+        </Stack>
     );
 }
