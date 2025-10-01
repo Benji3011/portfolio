@@ -55,7 +55,7 @@ export default function Presentation() {
                             chips: ['Katas', 'Perf', 'Tests', 'Docs courtes', 'Talks internes'],
                         },
                     ].map((section) => (
-                        <Grid size={{ xs: 12, md: 6 }} key={section.title}>
+                        <Grid key={section.title} size={ { xs: 12, md: 6 } }>
                             <Paper
                                 sx={{
                                     p: 3,

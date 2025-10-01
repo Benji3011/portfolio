@@ -1,14 +1,6 @@
 // components/Footer.tsx
-import {
-    Box,
-    Container,
-    Grid,
-    Link,
-    Typography,
-    Stack,
-    IconButton,
-    Divider,
-} from '@mui/material';
+import Grid from '@mui/material/Grid';
+import { Box, Container, Link, Typography, Stack, IconButton, Divider,  } from '@mui/material';
 import MailIcon from '@mui/icons-material/AlternateEmail';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -37,7 +29,7 @@ export default function Footer() {
                 >
                     <Grid container spacing={3} alignItems="center">
                         {/* Coordonnées */}
-                        <Grid item xs={12} md={6}>
+                        <Grid  size={ { xs: 12, md: 6 } }>
                             <Stack spacing={1}>
                                 <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
                                     Me joindre
@@ -56,7 +48,7 @@ export default function Footer() {
                         </Grid>
 
                         {/* Actions */}
-                        <Grid item xs={12} md={6}>
+                        <Grid  size={ { xs: 12, md: 6 } }>
                             <Stack
                                 direction="row"
                                 spacing={1}
