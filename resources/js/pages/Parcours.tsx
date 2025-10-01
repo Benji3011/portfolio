@@ -1,225 +1,173 @@
 import * as React from 'react';
 import { Head } from '@inertiajs/react';
+import Grid from '@mui/material/Grid';
 import {
-    Box,
-    Card,
-    CardContent,
-    Chip,
-    Container,
-    Stack,
-    Typography,
-    useTheme,
+    Box, Card, CardContent, Chip, Container, Stack, Typography, useTheme,
+    Dialog, DialogTitle, DialogContent, Avatar, Button, Link as MuiLink, Divider
 } from '@mui/material';
-import { events } from '@/data/parcours';
-import Grid from "@mui/material/Grid";
+import { events as data, type TimelineEvent } from '../data/parcours';
 
-/** Carte d’événement (sans la période en md+, elle est rendue à l’extérieur) */
-function EventCard(props: Readonly<{
-    title: string;
-    subtitle?: string;
-    bullets?: string[];
-    chips?: string[];
-    period?: string; // affichée seulement en xs
-}>) {
-    const { period, title, subtitle, bullets = [], chips = [] } = props;
-
+function EventCard({
+   period, title, subtitle, chips = [], onOpen
+}: Readonly<{ period?: string; title: string; subtitle?: string; chips?: string[]; onOpen: () => void; }>) {
     return (
         <Card variant="outlined">
             <CardContent>
-                {/* Période visible en xs uniquement */}
                 {period && (
-                    <Typography
-                        variant="overline"
-                        color="text.secondary"
-                        sx={{ display: { xs: 'block', md: 'none' } }}
-                    >
+                    <Typography variant="overline" color="text.secondary" sx={{ display: { xs: 'block', md: 'none' } }}>
                         {period}
                     </Typography>
                 )}
-
                 <Stack spacing={0.5}>
                     <Typography variant="h6">{title}</Typography>
-                    {subtitle && (
-                        <Typography variant="body2" color="text.secondary">
-                            {subtitle}
-                        </Typography>
-                    )}
+                    {subtitle && <Typography variant="body2" color="text.secondary">{subtitle}</Typography>}
                 </Stack>
-
-                {!!bullets.length && (
-                    <Stack component="ul" spacing={0.5} mt={1.5} pl={2}>
-                        {bullets.map((b, i) => (
-                            <li key={i}>
-                                <Typography variant="body2">{b}</Typography>
-                            </li>
-                        ))}
-                    </Stack>
-                )}
-
                 {!!chips.length && (
                     <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap mt={1.5}>
-                        {chips.map((c) => (
-                            <Chip key={c} label={c} size="small" />
-                        ))}
+                        {chips.map((c) => <Chip key={c} label={c} size="small" />)}
                     </Stack>
                 )}
+                <Stack direction="row" justifyContent="flex-end" mt={1}>
+                    <Button size="small" onClick={onOpen}>Détails</Button>
+                </Stack>
             </CardContent>
         </Card>
     );
 }
 
-/**
- * Une ligne sur la timeline :
- * - 2 colonnes (gauche/droite) dès md, 1 colonne en xs
- * - Pastille alignée au centre exact (left:50%)
- * - Date (période) en dehors de la carte, côté opposé, alignée sur le titre
- */
-function TimelineRow(props: Readonly<{
-    side: 'left' | 'right';
-    period: string;
-    title: string;
-    subtitle?: string;
-    bullets?: string[];
-    chips?: string[];
-}>) {
-    const { side, period, title, subtitle, bullets, chips } = props;
+function TimelineRow({
+    side, period, title, subtitle, chips, onOpen
+}: Readonly<{ side: 'left' | 'right'; period: string; title: string; subtitle?: string; chips?: string[]; onOpen: () => void; }>) {
     const theme = useTheme();
-
-    // Décalage vertical pour aligner pastille + date avec le titre de la carte
-    // (correspond à ~padding top du CardContent + ligne du titre)
-    const topOffset = theme.spacing(2.75); // ajuste finement si besoin (2.75/3/3.25)
-
+    const topOffset = theme.spacing(3);
     return (
-        <Box
-            position="relative"
-            sx={{
-                display: 'grid',
-                gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-                columnGap: 0, // pas de gap, on gère le “respiration” avec pl/pr
-                alignItems: 'start',
-            }}
-        >
-            {/* Colonne gauche */}
+        <Box position="relative" sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, columnGap: 0, alignItems: 'start' }}>
             <Box sx={{ order: side === 'left' ? 1 : 2, pr: { md: 2 } }}>
-                {side === 'left' ? (
-                    <EventCard title={title} subtitle={subtitle} bullets={bullets} chips={chips} period={period} />
-                ) : (
-                    <Box sx={{ display: { xs: 'none', md: 'block' } }} />
-                )}
+                {side === 'left'
+                    ? <EventCard period={period} title={title} subtitle={subtitle} chips={chips} onOpen={onOpen} />
+                    : <Box sx={{ display: { xs: 'none', md: 'block' } }} />}
             </Box>
-
-            {/* Colonne droite */}
             <Box sx={{ order: side === 'right' ? 2 : 1, pl: { md: 2 } }}>
-                {side === 'right' ? (
-                    <EventCard title={title} subtitle={subtitle} bullets={bullets} chips={chips} period={period} />
-                ) : (
-                    <Box sx={{ display: { xs: 'none', md: 'block' } }} />
-                )}
+                {side === 'right'
+                    ? <EventCard period={period} title={title} subtitle={subtitle} chips={chips} onOpen={onOpen} />
+                    : <Box sx={{ display: { xs: 'none', md: 'block' } }} />}
             </Box>
 
-            {/* Pastille au centre exact */}
-            <Box
-                sx={{
-                    display: { xs: 'none', md: 'block' },
-                    position: 'absolute',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    top: theme.spacing(3.5),
-                    zIndex: 1,
-                    pointerEvents: 'none',
-                }}
-            >
-                <Box
-                    sx={{
-                        width: 12,
-                        height: 12,
-                        borderRadius: '50%',
-                        bgcolor: 'primary.main',
-                        boxShadow: `0 0 0 3px ${theme.palette.background.paper}`,
-                    }}
-                />
+            {/* Pastille parfaitement centrée */}
+            <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', left: '50%', transform: 'translateX(-50%)', top: topOffset, zIndex: 1, pointerEvents: 'none' }}>
+                <Box sx={{ width: 12, height: 12, borderRadius: '50%', bgcolor: 'primary.main', boxShadow: (t) => `0 0 0 3px ${t.palette.background.paper}` }} />
             </Box>
 
-            {/* Date (période) à l’extérieur, côté OPPOSÉ à la carte */}
-            {/** côté gauche → date à droite de la ligne ; côté droit → date à gauche de la ligne */}
+            {/* Période à l’extérieur, côté opposé */}
             {side === 'left' ? (
-                <Box
-                    sx={{
-                        display: { xs: 'none', md: 'block' },
-                        position: 'absolute',
-                        left: 'calc(50% + 16px)', // à droite de la ligne
-                        top: topOffset,
-                        transform: 'translateY(-2px)',
-                        zIndex: 1,
-                    }}
-                >
-                    <Typography variant="overline" color="text.secondary">
-                        {period}
-                    </Typography>
+                <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', left: 'calc(50% + 16px)', top: topOffset, transform: 'translateY(-2px)', zIndex: 1 }}>
+                    <Typography variant="overline" color="text.secondary">{period}</Typography>
                 </Box>
             ) : (
-                <Box
-                    sx={{
-                        display: { xs: 'none', md: 'block' },
-                        position: 'absolute',
-                        right: 'calc(50% + 16px)', // à gauche de la ligne
-                        top: topOffset,
-                        transform: 'translateY(-2px)',
-                        textAlign: 'right',
-                        zIndex: 1,
-                    }}
-                >
-                    <Typography variant="overline" color="text.secondary">
-                        {period}
-                    </Typography>
+                <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', right: 'calc(50% + 16px)', top: topOffset, transform: 'translateY(-2px)', textAlign: 'right', zIndex: 1 }}>
+                    <Typography variant="overline" color="text.secondary">{period}</Typography>
                 </Box>
             )}
         </Box>
     );
 }
 
+function DetailsDialog({ open, onClose, ev }: Readonly<{ open: boolean; onClose: () => void; ev: TimelineEvent | null }>) {
+    if (!ev) return null;
+    return (
+        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+            <DialogTitle>
+                <Stack direction="row" spacing={1.5} alignItems="center">
+                    {ev.logo && <Avatar src={ev.logo} alt={ev.org || ''} variant="rounded" sx={{ width: 32, height: 32 }} />}
+                    <span>{ev.title}</span>
+                </Stack>
+            </DialogTitle>
+            <DialogContent dividers>
+                <Stack spacing={1.5}>
+                    {ev.org && (
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <Typography variant="body2"><strong>Organisation</strong> — {ev.org}</Typography>
+                            {ev.orgUrl && <MuiLink href={ev.orgUrl} target="_blank" rel="noopener">Site</MuiLink>}
+                        </Stack>
+                    )}
+                    {ev.status && <Typography variant="body2"><strong>Statut</strong> — {ev.status}</Typography>}
+
+                    {!!(ev.responsibilities?.length) && (
+                        <>
+                            <Typography variant="subtitle2">Responsabilités</Typography>
+                            <Stack component="ul" spacing={0.5} pl={2}>
+                                {ev.responsibilities.map((r, i) => <li key={i}><Typography variant="body2">{r}</Typography></li>)}
+                            </Stack>
+                            <Divider />
+                        </>
+                    )}
+
+                    {!!(ev.missions?.length) && (
+                        <>
+                            <Typography variant="subtitle2">Missions</Typography>
+                            <Stack component="ul" spacing={0.5} pl={2}>
+                                {ev.missions.map((m, i) => <li key={i}><Typography variant="body2">{m}</Typography></li>)}
+                            </Stack>
+                            <Divider />
+                        </>
+                    )}
+
+                    {!!(ev.relatedProjects?.length) && (
+                        <>
+                            <Typography variant="subtitle2">Réalisations associées</Typography>
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {ev.relatedProjects.map((slug) => (
+                                    <Chip key={slug} label={slug} component="a" href={`/projects/${slug}`} clickable size="small" />
+                                ))}
+                            </Stack>
+                        </>
+                    )}
+
+                    {!!(ev.relatedSkills?.length) && (
+                        <>
+                            <Typography variant="subtitle2">Compétences associées</Typography>
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {ev.relatedSkills.map((slug) => (
+                                    <Chip key={slug} label={slug} component="a" href={`/skills/${slug}`} clickable size="small" variant="outlined" />
+                                ))}
+                            </Stack>
+                        </>
+                    )}
+
+                    {ev.schoolBlurb && <Typography variant="body2">{ev.schoolBlurb}</Typography>}
+                </Stack>
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 export default function Parcours() {
+    const [open, setOpen] = React.useState(false);
+    const [current, setCurrent] = React.useState<TimelineEvent | null>(null);
+    const events = React.useMemo(() => [...data].sort((a,b) => (a.sort < b.sort ? 1 : -1)), []);
+    const handleOpen = (ev: TimelineEvent) => { setCurrent(ev); setOpen(true); };
+    const handleClose = () => setOpen(false);
+
     return (
         <Container maxWidth="lg">
             <Head title="Parcours" />
 
-            {/* === EN-TÊTE EN 3 COLONNES === */}
+            {/* Header 3 colonnes */}
             <Grid container spacing={1} sx={{ mt: 4, mb: 3 }} alignItems="baseline">
                 <Grid size={{ xs: 12, md: 4 }}>
-                    <Typography variant="h6" sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-                        Formations
-                    </Typography>
+                    <Typography variant="h6" sx={{ textAlign: { xs: 'center', md: 'left' } }}>Formations</Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
-                    <Typography variant="h4" align="center" component="h1">
-                        Parcours
-                    </Typography>
+                    <Typography variant="h4" component="h1" sx={{ textAlign: 'center' }}>Parcours</Typography>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
-                    <Typography variant="h6" sx={{ textAlign: { xs: 'center', md: 'right' } }}>
-                        Expérience
-                    </Typography>
+                    <Typography variant="h6" sx={{ textAlign: { xs: 'center', md: 'right' } }}>Expérience</Typography>
                 </Grid>
             </Grid>
 
-            {/* Conteneur timeline avec ligne centrale */}
+            {/* Timeline */}
             <Box position="relative" mb={8}>
-                {/* Ligne verticale pleine hauteur */}
-                <Box
-                    sx={{
-                        display: { xs: 'none', md: 'block' },
-                        position: 'absolute',
-                        left: '50%',
-                        top: 0,
-                        bottom: 0,
-                        width: 2,
-                        bgcolor: 'divider',
-                        transform: 'translateX(-50%)',
-                        zIndex: 0,
-                    }}
-                />
-
-                {/* Événements fusionnés (déjà triés) */}
+                <Box sx={{ display: { xs: 'none', md: 'block' }, position: 'absolute', left: '50%', top: 0, bottom: 0, width: 2, bgcolor: 'divider', transform: 'translateX(-50%)', zIndex: 0 }} />
                 <Stack spacing={3}>
                     {events.map((e) => (
                         <TimelineRow
@@ -228,12 +176,14 @@ export default function Parcours() {
                             period={e.period}
                             title={e.title}
                             subtitle={e.subtitle}
-                            bullets={e.bullets}
                             chips={e.chips}
+                            onOpen={() => handleOpen(e)}
                         />
                     ))}
                 </Stack>
             </Box>
+
+            <DetailsDialog open={open} onClose={handleClose} ev={current} />
         </Container>
     );
 }

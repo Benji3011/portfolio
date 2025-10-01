@@ -116,7 +116,7 @@ export default function Presentation() {
 
             {/* STACK PRINCIPALE */}
             <Grid container spacing={2} mt={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 4 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
@@ -137,7 +137,7 @@ export default function Presentation() {
                     </Card>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12, md: 4 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
@@ -156,13 +156,64 @@ export default function Presentation() {
                         </CardContent>
                     </Card>
                 </Grid>
+
+                <Grid size={{ xs: 12, md: 4 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h5">Mes valeurs</Typography>
+                            <Stack component="ul" spacing={0.75} pl={2}>
+                                <li><Typography variant="body2"><strong>Responsabilité</strong> : code maintenable, dette maîtrisée, sécurité en priorité.</Typography></li>
+                                <li><Typography variant="body2"><strong>Clarté</strong> : specs courtes, démos fréquentes, docs utiles.</Typography></li>
+                                <li><Typography variant="body2"><strong>Orientation produit</strong> : valeur métier visible, simplification des usages.</Typography></li>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid size={{ xs: 12, md: 4 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h5">Mon projet professionnel & personnel</Typography>
+                            <Typography variant="body2">
+                                Consolider mon rôle de développeur full-stack sur des produits internes (CRM, facturation, intégrations)
+                                et évoluer vers un <strong>lead technique</strong> axé qualité (CI/CD, sécurité) et accompagnement des usages.
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid size={{ xs: 12, md: 4 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h5">Mes qualités humaines</Typography>
+                            <Stack component="ul" spacing={0.75} pl={2}>
+                                <li><Typography variant="body2"><strong>Pédagogie</strong> : vulgarisation, transferts et pair-programming.</Typography></li>
+                                <li><Typography variant="body2"><strong>Rigueur</strong> : process simple, revues systématiques, fiabilité.</Typography></li>
+                                <li><Typography variant="body2"><strong>Écoute</strong> : prises en compte des retours et itérations rapides.</Typography></li>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+                <Grid size={{ xs: 12, md: 4 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h5">Centres d’intérêt</Typography>
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {['SEO', 'Pilotage d’entreprise', 'Musique', 'Danse', 'Jeux vidéo'].map((i) => (
+                                    <Chip key={i} label={i} size="small" />
+                                ))}
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
             </Grid>
+
+
 
             {/* SÉLECTION DE RÉALISATIONS (réelles) */}
             <Stack spacing={1.5} mt={5} mb={1}>
                 <Typography variant="h6">Sélection de réalisations</Typography>
                 <Typography variant="body2" color="text.secondary">
-                    Extraits issus de mon travail : regroupements fonctionnels basés sur les tickets Jira (voir la page Projets pour tout le détail).
+                    Extraits issus de mon travail : regroupements fonctionnels (voir la page <InertiaLink href="/projects" className={"underline"} >Réalisations</InertiaLink> pour tout le détail).
                 </Typography>
             </Stack>
 

@@ -20,6 +20,9 @@ import { Link as InertiaLink, Head } from '@inertiajs/react';
 import SkillsRadar, { RadarDatum } from '@/components/SkillsRadar';
 import { competences } from '@/data/competences';
 import { projects } from '@/data/projects';
+import {skills} from "@/data/skills";
+import {Button, Card, CardContent, LinearProgress} from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 function Level({ v }: Readonly<{ v: 0 | 1 | 2 | 3 }>) {
     const labels = ['0 — Découverte', '1 — Opérationnel', '2 — Avancé', '3 — Expert'] as const;
@@ -47,6 +50,7 @@ type C = {
 
 const ALL_BLOCS = Array.from(new Set(competences.map((c: any) => c.bloc))) as string[];
 const CATEGORIES: Array<C['category']> = ['Backend', 'Frontend', 'DevOps', 'Qualité', 'Soft Skills'];
+type Row = { name: string; slug: string; level: number; type: 'soft'|'tech' };
 
 export default function CompetencesPage() {
     const data: C[] = competences.map((c: any) => ({
@@ -73,6 +77,31 @@ export default function CompetencesPage() {
         return { category: cat!, value: Math.round((avg / 3) * 100) }; // 0–100
     });
 
+    const soft: Row[] = skills.filter(s => s.type === 'soft').map(s => ({ name: s.name, slug: s.slug, level: s.level, type: s.type }));
+    const tech: Row[] = skills.filter(s => s.type === 'tech').map(s => ({ name: s.name, slug: s.slug, level: s.level, type: s.type }));
+
+    const List = ({ title, data }: { title: string; data: Row[] }) => (
+        <Card variant="outlined">
+            <CardContent>
+                <Stack spacing={1.2}>
+                    <Typography variant="h6">{title}</Typography>
+                    <Stack spacing={1.2}>
+                        {data.map((r) => (
+                            <Stack key={r.slug} spacing={0.5}>
+                                <Stack direction="row" justifyContent="space-between" alignItems="baseline">
+                                    <Typography variant="body2">{r.name}</Typography>
+                                    <Typography variant="caption" color="text.secondary">Niveau {r.level}/5</Typography>
+                                </Stack>
+                                <LinearProgress variant="determinate" value={r.level * 20} />
+                                <Button size="small" component={InertiaLink as any} href={`/skills/${r.slug}`}>Voir la fiche</Button>
+                            </Stack>
+                        ))}
+                    </Stack>
+                </Stack>
+            </CardContent>
+        </Card>
+    );
+
     return (
         <Box sx={{ py: { xs: 6, md: 10 }, position: 'relative', zIndex: 2 }}>
             <Head title="Compétences" />
@@ -80,7 +109,19 @@ export default function CompetencesPage() {
                 <Typography variant="h3" sx={{ mb: 1, fontWeight: 700 }}>
                     Compétences
                 </Typography>
-                <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3 }}>
+
+                <Stack spacing={1.5} mt={4} mb={3}>
+                    <Typography variant="body1" color="text.secondary">
+                        Comparatif visuel : cliquez pour ouvrir la fiche détaillée (preuves, résultats, autocritique, évolution).
+                    </Typography>
+                </Stack>
+
+                <Grid container spacing={2}>
+                    <Grid size={{ xs: 12, md: 6 }}><List title="Compétences humaines" data={soft} /></Grid>
+                    <Grid size={{ xs: 12, md: 6 }}><List title="Compétences techniques" data={tech} /></Grid>
+                </Grid>
+
+                <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3, mt: 4 }}>
                     Carte des compétences alignée sur les blocs RNCP. Filtrez par bloc, recherchez une compétence, et visualisez le niveau au radar.
                 </Typography>
 

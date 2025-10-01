@@ -36,7 +36,7 @@ const NAV_ITEMS: Array<{ label: string; href: string }> = [
     { label: 'Contact', href: '/contact' }
 ];
 
-export default function NavBar({ mode, toggleMode, userName, avatarUrl }: Props) {
+export default function NavBar({ mode, toggleMode, userName, avatarUrl }: Readonly<Props>) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [open, setOpen] = React.useState(false);
@@ -70,7 +70,7 @@ export default function NavBar({ mode, toggleMode, userName, avatarUrl }: Props)
     return (
         <>
             <AppBar
-                position="fixed"
+                position="sticky"
                 elevation={0}
                 color="transparent"
                 sx={{
@@ -80,11 +80,9 @@ export default function NavBar({ mode, toggleMode, userName, avatarUrl }: Props)
                 }}
             >
                 <Toolbar sx={{ minHeight: 72, px: { xs: 2, sm: 4 } }}>
-                    <Stack direction="row" spacing={1.5} alignItems="center" sx={{ mr: 2 }}>
-                        <Avatar src={avatarUrl} alt={userName} sx={{ width: 36, height: 36 }} />
-                        <Typography variant="subtitle1" fontWeight={700} noWrap>
-                            {userName}
-                        </Typography>
+                    <Stack direction="row" spacing={1} alignItems="center" sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
+                        <Avatar sx={{ width: 32, height: 32 }} alt="Profil" src="/profil.jpg" />
+                        <Typography variant="body2">Benjamin Boudry</Typography>
                     </Stack>
 
                     <Box sx={{ flexGrow: 1 }} />

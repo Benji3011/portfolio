@@ -19,12 +19,12 @@ export const skills: Skill[] = [
     level: 4,
     definition: 'Organisation itérative du delivery (cadrage court, incréments, feedback régulier).',
     proofs: [
-      { story: 'Pilotage des incréments pour le CRM interne (tickets, releases).' , projectSlug: 'gestion-des-contacts-entreprises' },
-      { story: 'Priorisation des évolutions doc. PDF & devis/factures avec les parties prenantes.', projectSlug: 'facturation-documents-pdf-devis-facture' }
+      { story: 'Pilotage des incréments pour le CRM interne (tickets, releases).', projectSlug: 'gestion-des-contacts-entreprises' },
+      { story: 'Priorisation des évolutions PDF devis/factures avec les métiers.', projectSlug: 'facturation-documents-pdf-devis-facture' }
     ],
-    results: 'Cycle plus court, moins de retours tardifs, visibilité accrue pour les demandeurs.',
-    selfReview: 'Solide en delivery et communication, encore à structurer la mesure d’impact.',
-    evolution: 'Renforcer la partie metrics (DORA-like) et automatiser le changelog.',
+    results: 'Cycle plus court, moins de retours tardifs, visibilité accrue.',
+    selfReview: 'Solide en delivery ; à mieux mesurer l’impact.',
+    evolution: 'Renforcer les metrics (type DORA) et automatiser le changelog.',
     relatedProjects: ['gestion-des-contacts-entreprises','facturation-documents-pdf-devis-facture']
   },
   {
@@ -32,13 +32,13 @@ export const skills: Skill[] = [
     name: 'Intégration d’APIs / services SaaS',
     type: 'tech',
     level: 4,
-    definition: 'Connexion de services externes (REST, webhooks, OAuth) et synchronisation de données.',
+    definition: 'Connexion de services externes (REST, webhooks, OAuth) et synchronisations.',
     proofs: [
-      { story: 'Intégration CRM ↔︎ HubSpot (synchronisation contacts/entreprises).' , projectSlug: 'gestion-des-contacts-entreprises' }
+      { story: 'Intégration CRM ↔︎ HubSpot (contacts/entreprises).', projectSlug: 'gestion-des-contacts-entreprises' }
     ],
-    results: 'Données unifiées, réduction des doubles saisies et des erreurs humaines.',
-    selfReview: 'À l’aise sur REST et OAuth ; à pousser sur stratégie de retries & monitoring.',
-    evolution: 'Mettre des tableaux de bord d’intégration (jobs, erreurs, SLA).',
+    results: 'Données unifiées, réduction des doubles saisies.',
+    selfReview: 'À pousser la stratégie de retries & le monitoring.',
+    evolution: 'Tableaux de bord d’intégration (jobs, erreurs, SLA).',
     relatedProjects: ['gestion-des-contacts-entreprises']
   },
   {
@@ -46,13 +46,13 @@ export const skills: Skill[] = [
     name: 'Génération PDF & facturation',
     type: 'tech',
     level: 4,
-    definition: 'Production de documents légaux (devis, factures, avoirs) et workflows d’approbation.',
+    definition: 'Production de documents légaux (devis, factures) et workflows d’approbation.',
     proofs: [
-      { story: 'Refonte des modèles PDF, ajout des totaux, TVA et mentions légales.', projectSlug: 'facturation-documents-pdf-devis-facture' }
+      { story: 'Refonte modèles PDF avec totaux, TVA, mentions légales.', projectSlug: 'facturation-documents-pdf-devis-facture' }
     ],
-    results: 'Documents conformes et lisibles, réduction des retours et litiges.',
-    selfReview: 'Bonne maîtrise, encore à automatiser les contrôles de conformité.',
-    evolution: 'Ajout de tests de non-régression visuelle sur PDF critiques.',
+    results: 'Documents conformes, moins de litiges.',
+    selfReview: 'Contrôles automatiques à élargir.',
+    evolution: 'Tests de non-régression visuelle sur les PDF critiques.',
     relatedProjects: ['facturation-documents-pdf-devis-facture']
   },
   {
@@ -62,11 +62,11 @@ export const skills: Skill[] = [
     level: 4,
     definition: 'Évolution du schéma, relations, indexation et migrations sécurisées.',
     proofs: [
-      { story: 'Nettoyage des pivots & clés étrangères, enums/slugs cohérents.', projectSlug: 'modele-de-donnees-migrations' }
+      { story: 'Nettoyage pivots & FK, cohérence enums/slugs.', projectSlug: 'modele-de-donnees-migrations' }
     ],
-    results: 'Schéma plus clair, requêtes plus fiables et plus rapides.',
-    selfReview: 'À continuer sur les migrations idempotentes pour CI/CD.',
-    evolution: 'Standardiser le naming et documenter les relations clés.',
+    results: 'Schéma plus clair, requêtes plus fiables/rapides.',
+    selfReview: 'Mieux standardiser l’idempotence des migrations.',
+    evolution: 'Naming systématique + doc des relations clés.',
     relatedProjects: ['modele-de-donnees-migrations']
   },
   {
@@ -76,11 +76,11 @@ export const skills: Skill[] = [
     level: 3,
     definition: 'Traitements asynchrones, hooks métier et orchestration applicative.',
     proofs: [
-      { story: 'Mise en place d’observers sur créations/updates et jobs planifiés.', projectSlug: 'api-observers-jobs' }
+      { story: 'Observers sur créations/updates + jobs planifiés.', projectSlug: 'api-observers-jobs' }
     ],
-    results: 'Moins de couplage, meilleure résilience, tâches planifiées.',
-    selfReview: 'Encore à outiller le monitoring des échecs de jobs.',
-    evolution: 'Dead-letter queues + alerte Slack en cas d’échec.',
+    results: 'Moins de couplage, meilleure résilience.',
+    selfReview: 'Monitoring d’échecs à renforcer.',
+    evolution: 'Dead-letter queue + alerte Slack en cas d’échec.',
     relatedProjects: ['api-observers-jobs']
   },
   {
@@ -90,11 +90,11 @@ export const skills: Skill[] = [
     level: 4,
     definition: 'Revues, tests de base, pipelines d’intégration & déploiement.',
     proofs: [
-      { story: 'Pipelines GitLab/Jenkins pour build/test et release progressive.' }
+      { story: 'Pipelines GitLab/Jenkins pour build/test & release progressive.' }
     ],
-    results: 'Moins de régressions en prod et déploiements plus sûrs.',
-    selfReview: 'Bonne base, à étendre la couverture de tests.',
-    evolution: 'Ajouter des tests E2E légers sur les flux critiques.',
+    results: 'Moins de régressions, déploiements plus sûrs.',
+    selfReview: 'Couverture de tests à élargir.',
+    evolution: 'Tests E2E légers sur les flux critiques.',
     relatedProjects: ['api-observers-jobs','modele-de-donnees-migrations']
   },
   {
@@ -102,13 +102,13 @@ export const skills: Skill[] = [
     name: 'Sécurité & permissions',
     type: 'tech',
     level: 3,
-    definition: 'Contrôle d’accès, validation côté serveur, hygiène des secrets.',
+    definition: 'Contrôle d’accès, validation serveur, hygiène des secrets.',
     proofs: [
-      { story: 'Durcissement des règles d’accès et validation des inputs sensibles.' }
+      { story: 'Durcissement règles d’accès et validation des inputs sensibles.' }
     ],
     results: 'Réduction des cas limites et élévations de privilèges.',
-    selfReview: 'À compléter par une checklist OWASP interne.',
-    evolution: 'Automatiser l’audit sur les endpoints sensibles.',
+    selfReview: 'Checklist OWASP interne à systématiser.',
+    evolution: 'Audit automatisé des endpoints sensibles.',
     relatedProjects: ['gestion-des-contacts-entreprises']
   },
   {
@@ -116,13 +116,13 @@ export const skills: Skill[] = [
     name: 'Communication produit',
     type: 'soft',
     level: 4,
-    definition: 'Rendre visible le travail, clarifier le “pourquoi” et les impacts.',
+    definition: 'Rendre visible le travail, clarifier le “pourquoi” & les impacts.',
     proofs: [
-      { story: 'Changelog court et démos régulières auprès des demandeurs.' }
+      { story: 'Changelog court & démos régulières.' }
     ],
-    results: 'Meilleure adoption et moins de demandes contradictoires.',
-    selfReview: 'À structurer des “release notes” plus régulières.',
-    evolution: 'Mettre un template de release et une newsletter interne mensuelle.',
+    results: 'Meilleure adoption, moins de demandes contradictoires.',
+    selfReview: 'Rythme de release notes à stabiliser.',
+    evolution: 'Template de release + newsletter interne mensuelle.',
     relatedProjects: ['gestion-des-contacts-entreprises','facturation-documents-pdf-devis-facture']
   },
   {
@@ -130,13 +130,13 @@ export const skills: Skill[] = [
     name: 'UX applicative',
     type: 'soft',
     level: 3,
-    definition: 'Forms, listes, messages d’erreur utiles, raccourcis fréquents.',
+    definition: 'Forms, listes, feedbacks utiles, raccourcis fréquents.',
     proofs: [
-      { story: 'Simplification des formulaires et feedbacks inline.' }
+      { story: 'Simplification de formulaires & messages d’erreurs inline.' }
     ],
-    results: 'Moins de friction et saisie plus rapide.',
-    selfReview: 'Bon sens pratique, à étayer par des tests d’usage rapides.',
-    evolution: 'Micro-usability tests trimestriels avec 3–5 utilisateurs.',
+    results: 'Moins de friction, saisie plus rapide.',
+    selfReview: 'Méthodo de tests d’usage à cadrer.',
+    evolution: 'Micro-tests trimestriels (3–5 utilisateurs).',
     relatedProjects: ['gestion-des-contacts-entreprises']
   },
   {
@@ -146,11 +146,11 @@ export const skills: Skill[] = [
     level: 4,
     definition: 'Docs courtes, à jour, utiles aux nouveaux et aux Ops.',
     proofs: [
-      { story: 'Procédures de déploiement et runbooks succincts.' }
+      { story: 'Procédure de déploiement et runbooks succincts.' }
     ],
     results: 'Onboarding plus rapide, moins d’interruptions.',
-    selfReview: 'Continuer à supprimer/mettre à jour les pages obsolètes.',
-    evolution: 'Checklist trimestrielle de nettoyage de la doc.',
+    selfReview: 'Nettoyage de la doc à ritualiser.',
+    evolution: 'Checklist trimestrielle de housekeeping.',
     relatedProjects: ['modele-de-donnees-migrations','api-observers-jobs']
   }
 ];

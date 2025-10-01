@@ -1,37 +1,30 @@
 import * as React from 'react';
-import Page from '@/components/Page';
-import { Paper, Stack, Typography, Button, Link as MuiLink } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { Head, Link as InertiaLink } from '@inertiajs/react';
+import Grid from '@mui/material/Grid';
+import { Container, Stack, Typography, Card, CardContent, Button, Link as MuiLink } from '@mui/material';
 
 export default function Contact() {
   return (
-    <Page title="Contact" containerProps={{ maxWidth: 'md' }}>
-      <Paper sx={{ p: { xs: 2, md: 3 } }}>
-        <Typography variant="h4" fontWeight={800} gutterBottom>
-          Contact
-        </Typography>
-        <Typography color="text.secondary" sx={{ mb: 2 }}>
-          Dispo pour échange rapide (15–20 min). Réponse sous 24h ouvrées.
-        </Typography>
-        <Stack spacing={1.2} sx={{ mb: 3 }}>
-          <MuiLink href="mailto:ton.email@domaine.com">ton.email@domaine.com</MuiLink>
-          <MuiLink href="tel:+33XXXXXXXXX">+33 X XX XX XX XX</MuiLink>
-          <MuiLink href="https://www.linkedin.com/in/ton-profil/" target="_blank" rel="noreferrer">
-            LinkedIn
-          </MuiLink>
-          <MuiLink href="https://gitlab.com/users/ton-profil/projects" target="_blank" rel="noreferrer">
-            GitLab
-          </MuiLink>
+      <Container maxWidth="sm">
+        <Head title="Contact" />
+        <Stack spacing={1.5} mt={4} mb={3} textAlign="center">
+          <Typography variant="h4">Contact</Typography>
+          <Typography variant="body2" color="text.secondary">N’hésite pas à me joindre via un des canaux ci-dessous.</Typography>
         </Stack>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.2}>
-          <Button href="/CV.pdf" download variant="contained" endIcon={<ArrowForwardIcon />}>
-            Télécharger mon CV
-          </Button>
-          <Button href="/projects" variant="outlined">
-            Voir mes réalisations
-          </Button>
-        </Stack>
-      </Paper>
-    </Page>
+
+        <Card variant="outlined">
+          <CardContent>
+            <Stack spacing={1.5}>
+              <Typography variant="body1"><strong>Email</strong> — <MuiLink href="mailto:benjamin.boudry98@gmail.com">benjamin.boudry98@gmail.com</MuiLink></Typography>
+              <Typography variant="body1"><strong>Téléphone</strong> — <MuiLink href="tel:+33767989930">07 67 98 99 30</MuiLink></Typography>
+              <Typography variant="body1"><strong>LinkedIn</strong> — <MuiLink href="https://www.linkedin.com/in/benjaminboudry/" target="_blank" rel="noopener">linkedin.com/in/benjaminboudry</MuiLink></Typography>
+            </Stack>
+            <Stack direction="row" spacing={1} mt={2} justifyContent="center">
+              <Button component={InertiaLink as any} href="/projects" variant="outlined" size="small">Mes réalisations</Button>
+              <Button component={InertiaLink as any} href="/competences" variant="outlined" size="small">Compétences</Button>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Container>
   );
 }
