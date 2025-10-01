@@ -78,7 +78,7 @@ export default function Footer() {
                                 </IconButton>
                                 <IconButton
                                     component={Link}
-                                    href="/cv/Benjamin_Boudry.pdf"
+                                    href="/CV.pdf"
                                     target="_blank"
                                     rel="noreferrer"
                                     aria-label="CV (PDF)"

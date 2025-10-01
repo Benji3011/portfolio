@@ -1,98 +1,192 @@
 import * as React from 'react';
+import { Head, Link as InertiaLink } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
-import { Box, Container, Paper, Typography, Stack, Chip, Button } from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Link, Head } from '@inertiajs/react';
+import {
+    Container,
+    Stack,
+    Typography,
+    Card,
+    CardContent,
+    Chip,
+    Button,
+    Divider,
+} from '@mui/material';
+
+// Données réelles des projets (issues Jira regroupées)
+import { projects } from '@/data/projects';
+import ProjectCard from '@/components/ProjectCard';
 
 export default function Presentation() {
-    return (
-        <Box id="presentation" sx={{ minHeight: '100vh', pt: { xs: 9, sm: 12 }, pb: { xs: 6, sm: 10 }, display: 'flex', alignItems: 'flex-start', position: 'relative', zIndex: 2 }}>
-            <Head title="Présentation" />
-            <Container maxWidth="lg">
-                <Stack spacing={3} sx={{ mb: 4 }}>
-                    <Typography component="h1" variant="h4" fontWeight={800}>Présentation</Typography>
-                    <Typography color="text.secondary">
-                        Vue synthétique de qui je suis, ce que je vise et comment je travaille — pour évaluer rapidement mon adéquation au poste et à l’équipe.
-                    </Typography>
-                </Stack>
+    // Choix d’une courte sélection (les 3 premiers groupes les plus parlants)
+    const featured = React.useMemo(() => projects.slice(0, 3), []);
 
-                <Grid container spacing={2}>
-                    {[
-                        {
-                            title: 'Mes valeurs',
-                            content: [
-                                'Pragmatisme — livrer de la valeur (ex: rationalisation CI/CD → temps de build −42%).',
-                                'Fiabilité — bases propres (tests, patchs) → 0 CVE en prod sur 6 mois.',
-                                'Transparence — communication claire sur risques et dettes.',
-                                'Esprit d’équipe — docs/snippets utiles pour accélérer les autres.',
-                            ],
-                        },
-                        {
-                            title: 'Mon projet pro & perso',
-                            content: [
-                                'Court terme — Ingénieur logiciel R&D backend/plateforme (Laravel/Java, APIs, perf, CI/CD).',
-                                'Moyen terme — Architecture pragmatique, monitoring, encadrement technique.',
-                                'Perso — veille utile, transmission (katas, docs concises, talks internes).',
-                            ],
-                            chips: ['Architecture', 'API & Perf', 'CI/CD', 'Sécurité app', 'Observabilité'],
-                        },
-                        {
-                            title: 'Qualités humaines (avec preuves)',
-                            content: [
-                                'Communication claire — synthèses dev/business → moins d’allers-retours.',
-                                'Leadership technique — checklists de revue, pair-programming → onboarding + rapide.',
-                                'Esprit critique — challenge coût/bénéfice, POC avant industrialisation.',
-                                'Fiabilité — engagements tenus, alertes précoces si aléas.',
-                            ],
-                        },
-                        {
-                            title: 'Centres d’intérêt (utiles au job)',
-                            content: [
-                                'Veille & benchmarks — évaluer les outils par la mesure.',
-                                'Qualité logicielle — katas, tests, refactors guidés par la lisibilité.',
-                                'Transmission — mini-guides, snippets, talks internes.',
-                            ],
-                            chips: ['Katas', 'Perf', 'Tests', 'Docs courtes', 'Talks internes'],
-                        },
-                    ].map((section) => (
-                        <Grid key={section.title} size={ { xs: 12, md: 6 } }>
-                            <Paper
-                                sx={{
-                                    p: 3,
-                                    backgroundColor: (t) => (t.palette.mode === 'light' ? '#fff' : 'rgba(255,255,255,0.03)'),
-                                    transition: 'transform .18s, box-shadow .18s, border-color .18s',
-                                    '&:hover': {
-                                        transform: 'translateY(-2px)',
-                                        boxShadow: (t) => t.shadows[6],
-                                        borderColor: (t) => (t.palette.mode === 'light' ? '#3b82f6' : '#60a5fa'),
-                                    },
-                                }}
-                            >
-                                <Typography variant="h6" fontWeight={800} sx={{ mb: 1 }}>{section.title}</Typography>
-                                <Stack spacing={1.2}>{section.content.map((p, i) => (<Typography key={i}>{p}</Typography>))}</Stack>
-                                {section.chips && (
-                                    <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 2 }}>
-                                        {section.chips.map((t) => (<Chip key={t} label={t} size="small" sx={{ borderRadius: 999 }} />))}
-                                    </Stack>
-                                )}
-                            </Paper>
-                        </Grid>
+    return (
+        <Container maxWidth="lg">
+            <Head title="Présentation" />
+
+            {/* HERO */}
+            <Stack spacing={1.5} mt={4} mb={4} sx={{ textAlign: { xs: 'left', md: 'center' } }}>
+                <Typography variant="h3" component="h1">
+                    Développeur Full-Stack
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                    Je conçois et livre des fonctionnalités utiles pour des produits internes :
+                    CRM, facturation PDF, intégrations SaaS, sécurité & qualité logicielle.
+                </Typography>
+                <Stack direction="row" spacing={1} justifyContent={{ md: 'center' }} flexWrap="wrap" useFlexGap>
+                    {['Laravel', 'React', 'MUI', 'PHP', 'MySQL', 'CI/CD', 'Docker'].map((t) => (
+                        <Chip key={t} label={t} size="small" />
                     ))}
+                </Stack>
+            </Stack>
+
+            {/* CE QUE JE FAIS / VALEUR AJOUTÉE */}
+            <Grid container spacing={2}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Ce que je fais
+                            </Typography>
+                            <Divider sx={{ mb: 1.5 }} />
+                            <Stack component="ul" spacing={0.75} pl={2}>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Applications internes</strong> orientées métier (CRM, back-office, outils Ops).
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Génération documentaire</strong> (devis, factures, PDF) et workflows associés.
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Intégrations</strong> (Ex. HubSpot / APIs tierces) et synchronisations de données.
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Qualité & delivery</strong> : CI/CD (GitLab/Jenkins), revues, tests, monitoring léger.
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Sécurité & permissions</strong> : contrôle d’accès, validation, conformité.
+                                    </Typography>
+                                </li>
+                            </Stack>
+                        </CardContent>
+                    </Card>
                 </Grid>
 
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.2} sx={{
-                    mt: 4,
-                    '& .MuiButton-root': { borderRadius: 999, textTransform: 'none', fontWeight: 700, px: 2.4, py: 1.1, transition: 'transform .18s, box-shadow .18s, opacity .18s' },
-                    '& .MuiButton-root:hover': { transform: 'translateY(-2px)', boxShadow: (t) => t.shadows[6] },
-                }}>
-                    <Button component={Link as any} href="/competences" endIcon={<ArrowForwardIcon />} sx={{ background: 'linear-gradient(90deg, #3b82f6, #22d3ee)', color: '#fff' }}>
-                        Explorer mes compétences
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Comment je travaille
+                            </Typography>
+                            <Divider sx={{ mb: 1.5 }} />
+                            <Stack component="ul" spacing={0.75} pl={2}>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Clarté</strong> : cadrage rapide, specs concises, prototypes si besoin.
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Itératif</strong> : petits incréments en prod, feedbacks fréquents.
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Lisibilité</strong> : composants MUI cohérents, design système simple.
+                                    </Typography>
+                                </li>
+                                <li>
+                                    <Typography variant="body2">
+                                        <strong>Responsable</strong> : métriques de base (erreurs, temps de réponse), dettes gérées.
+                                    </Typography>
+                                </li>
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+
+            {/* STACK PRINCIPALE */}
+            <Grid container spacing={2} mt={2}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Stack principale
+                            </Typography>
+                            <Divider sx={{ mb: 1.5 }} />
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {[
+                                    'Laravel', 'PHP 8', 'MySQL',
+                                    'React', 'TypeScript', 'MUI', 'Inertia',
+                                    'Blade', 'Eloquent', 'REST',
+                                    'GitLab', 'Jenkins', 'Docker (dev)',
+                                ].map((t) => (
+                                    <Chip key={t} label={t} size="small" />
+                                ))}
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <Card variant="outlined" sx={{ height: '100%' }}>
+                        <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                                Domaines couverts
+                            </Typography>
+                            <Divider sx={{ mb: 1.5 }} />
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                {[
+                                    'CRM interne', 'Facturation & PDF', 'Intégrations SaaS',
+                                    'UX applicative', 'Sécurité & permissions', 'CI/CD',
+                                    'Modélisation de données', 'Jobs/Observers', 'Monitoring léger',
+                                ].map((t) => (
+                                    <Chip key={t} label={t} size="small" />
+                                ))}
+                            </Stack>
+                        </CardContent>
+                    </Card>
+                </Grid>
+            </Grid>
+
+            {/* SÉLECTION DE RÉALISATIONS (réelles) */}
+            <Stack spacing={1.5} mt={5} mb={1}>
+                <Typography variant="h6">Sélection de réalisations</Typography>
+                <Typography variant="body2" color="text.secondary">
+                    Extraits issus de mon travail : regroupements fonctionnels basés sur les tickets Jira (voir la page Projets pour tout le détail).
+                </Typography>
+            </Stack>
+
+            <Grid container spacing={2}>
+                {featured.map((p) => (
+                    <Grid key={p.slug} size={{ xs: 12, md: 4 }}>
+                        <ProjectCard project={p} href={`/projects/${p.slug}`} />
+                    </Grid>
+                ))}
+            </Grid>
+
+            <Stack alignItems="center" spacing={1.5} mt={5} mb={8}>
+                <Typography variant="body1" color="text.secondary">
+                    Envie d’échanger sur un besoin interne (CRM, outil métier, intégration) ?
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                    <Button component={InertiaLink as any} href="/projects" variant="contained">
+                        Voir toutes mes réalisations
                     </Button>
-                    <Button component={Link as any} href="/projets" endIcon={<ArrowForwardIcon />} sx={{ background: 'linear-gradient(90deg, #a855f7, #ec4899)', color: '#fff' }}>
-                        Voir mes réalisations
+                    <Button component={InertiaLink as any} href="/contact" variant="outlined">
+                        Me contacter
                     </Button>
                 </Stack>
-            </Container>
-        </Box>
+            </Stack>
+        </Container>
     );
 }
