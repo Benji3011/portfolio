@@ -2,12 +2,13 @@ import React, { useMemo } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
     Container, Stack, Typography, Chip, Card, CardContent,
-    Divider
+    Divider, Button
 } from '@mui/material';
 import { skills, Skill } from '@/data/skills';
 import { projects, Project } from '@/data/projects';
 import ProjectCard from '@/components/ProjectCard';
 import SkillLevel from '@/components/SkillLevel';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 type PageProps = { slug?: string };
 
@@ -30,6 +31,10 @@ export default function SkillShow() {
         () => skills.find((s) => s.slug === slug),
         [slug]
     );
+
+    // @ts-ignore
+    const anchor = skill.type === 'soft' ? '#humaines' : '#techniques';
+    const backHref = `/competences${anchor}`;
 
     const relatedProjects: Project[] = useMemo(() => {
         if (!skill) return [];
@@ -56,6 +61,17 @@ export default function SkillShow() {
         <>
             <Head title={skill.name} />
             <Container maxWidth="md">
+                <Stack direction="row" justifyContent="flex-start" sx={{ mb: 1 }}>
+                    <Button
+                        component={Link as any}
+                        href={backHref}
+                        startIcon={<ArrowBackIosNewIcon fontSize="small" />}
+                        variant="outlined"
+                        size="small"
+                    >
+                        Retour aux compétences
+                    </Button>
+                </Stack>
                 <Stack spacing={0.5} mt={4} mb={2}>
                     <Typography variant="h4">{skill.name}</Typography>
                     <Typography variant="body2" color="text.secondary">

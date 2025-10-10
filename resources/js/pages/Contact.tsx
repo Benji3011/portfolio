@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Head, Link as InertiaLink } from '@inertiajs/react';
-import Grid from '@mui/material/Grid';
 import { Container, Stack, Typography, Card, CardContent, Button, Link as MuiLink } from '@mui/material';
-import {clearScreenDown} from "node:readline";
 
 export default function Contact() {
   return (

@@ -58,22 +58,70 @@ export const projects: Project[] = [
   },
   {
     slug: 'integration-hubspot',
-    title: 'Connecteur HubSpot',
-    summary: 'Synchronisation d’IDs et champs clés entre CRM et HubSpot avec contrôles de droits.',
-    tags: ['API', 'Intégration', 'Data'],
-    tech: ['Laravel', 'HTTP Client', 'HubSpot API', 'Jobs', 'Queues'],
-    highlights: ['Mappage documenté', 'Idempotence', 'Journalisation d’erreurs'],
+    title: 'Refonte du connecteur HubSpot ↔ CRM',
+    summary: `Modernisation du connecteur entre le CRM interne et HubSpot, avec mise en place d’une sandbox d’intégration pour tester en conditions réelles sans risque et fiabiliser les synchronisations.`,
+    tags: ['API', 'Intégration', 'CRM', 'HubSpot', 'Sandbox', 'Laravel'],
+    tech: ['Laravel 10', 'HubSpot API v3', 'Jobs', 'Queues', 'Webhooks', 'OAuth 2.0'],
+    highlights: [
+      'Sandbox HubSpot reliée au CRM interne (tests sans toucher la prod)',
+      'Refactor du code legacy (services, jobs, contrôleurs)',
+      'Gestion centralisée des erreurs + retries + logs',
+      'Mappings Contacts/Companies fiabilisés',
+      'Documentation technique et fonctionnelle'
+    ],
     examples: [
-      { key: 'definition', summary: 'Assurer une vue unifiée des données client.' },
-      { key: 'objectif',  summary: 'Réduire les écarts entre CRM et HubSpot.' },
-      { key: 'etapes',    summary: 'Schéma de flux → adaptateur HubSpot → files/retries → logs.' },
-      { key: 'acteurs',   summary: 'R&D, Marketing (HubSpot), CSM.' },
-      { key: 'resultats_entreprise', summary: 'Données alignées, moins de corrections manuelles.' },
-      { key: 'resultats_pour_moi',   summary: 'Montée en maîtrise sur intégrations robustes.' },
-      { key: 'lendemains_immediat',  summary: 'Consolider logs et cas d’erreurs fréquents.' },
-      { key: 'lendemains_moyen_terme', summary: 'Tests de contrat et sandbox systématiques.' },
-      { key: 'lendemains_aujourdhui', summary: 'Flux stables, ajustements mineurs.' },
-      { key: 'regard',    summary: 'Standardiser un “SDK” interne minimal par domaine.' }
+      {
+        key: 'definition',
+        summary: `Le connecteur HubSpot existant était obsolète et peu traçable. J’ai refondu l’ensemble pour le rendre maintenable, testable et transparent. Objectif : redonner de la confiance dans les échanges CRM ↔ HubSpot.`
+      },
+      {
+        key: 'objectif',
+        summary: `Permettre aux devs et aux métiers de tester sereinement les synchronisations (Contacts, Companies, Deals) sans impacter la production, tout en clarifiant la logique et les erreurs.`
+      },
+      {
+        key: 'etapes',
+        summary: `• Audit du legacy : classes obsolètes, appels non gérés, dette technique identifiée
+• Refactor Laravel : services Hubspot*, centralisation des appels API v3, jobs/queues
+• Sandbox HubSpot : OAuth, dataset de test, interconnexion CRM pour tests réalistes
+• Fiabilisation : gestion d’erreurs normalisée (4xx/5xx), retries progressifs, logs exploitables
+• Documentation : technique (flux, endpoints, payloads) et fonctionnelle (scénarios, cycles)`
+      },
+      {
+        key: 'acteurs',
+        summary: `R&D (backend), marketing (utilisateurs HubSpot) et support CRM pour valider les flux réels. Pilotage via Jira, documentation Confluence.`
+      },
+      {
+        key: 'resultats_entreprise',
+        summary: `• Tests réalistes sans toucher aux données clients (sandbox)
+• Synchronisations plus fiables et prévisibles
+• Moins d’incidents liés aux doublons ou champs mal mappés
+• Sérénité accrue et meilleure vitesse de livraison sur les sujets HubSpot`
+      },
+      {
+        key: 'resultats_pour_moi',
+        summary: `• Maîtrise d’un connecteur complexe de bout en bout
+• Confiance sur l’intégration d’API tierces avec Laravel (jobs, queues, webhooks)
+• Mise en place d’environnements d’intégration réalistes (sandbox)`
+      },
+      {
+        key: 'lendemains_immediat',
+        summary: `• Surveiller les flux en sandbox
+• Couvrir les cas limites (tickets/engagements)
+• Peaufiner la journalisation`
+      },
+      {
+        key: 'lendemains_moyen_terme',
+        summary: `• Alertes Slack et supervision simple des erreurs
+• Tests d’intégration automatisés par scénarios`
+      },
+      {
+        key: 'lendemains_aujourdhui',
+        summary: `• La sandbox est intégrée au cycle standard : chaque évolution est validée avant prod`
+      },
+      {
+        key: 'regard',
+        summary: `Le défi était autant technique qu’organisationnel : instaurer une culture de test entre outils. La sandbox a été un point de bascule majeur pour fiabiliser et apaiser les développements.`
+      }
     ],
     timeframe: { start: '2024-03', end: '2025-02' }
   },

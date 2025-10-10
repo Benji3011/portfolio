@@ -1,261 +1,63 @@
 import * as React from 'react';
-import {
-    Box,
-    Chip,
-    Container,
-    Paper,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-    TextField,
-    Tabs,
-    Tab,
-} from '@mui/material';
-import { Link as InertiaLink, Head } from '@inertiajs/react';
-import SkillsRadar, { RadarDatum } from '@/components/SkillsRadar';
+import { Head } from '@inertiajs/react';
+import { Container, Grid, Card, CardContent, Stack, Typography, LinearProgress, Button } from '@mui/material';
+import { Link } from '@inertiajs/react';
+import { skills as rawSkills } from '@/data/skills';
 import { competences } from '@/data/competences';
-import { projects } from '@/data/projects';
-import {skills} from "@/data/skills";
-import {Button, Card, CardContent, LinearProgress} from "@mui/material";
-import Grid from "@mui/material/Grid";
-
-function Level({ v }: Readonly<{ v: 0 | 1 | 2 | 3 }>) {
-    const labels = ['0 — Découverte', '1 — Opérationnel', '2 — Avancé', '3 — Expert'] as const;
-    return <Chip size="small" label={labels[v]} variant="outlined" sx={{ borderRadius: 999 }} />;
-}
-
-// Heuristiques de catégorisation si aucune catégorie n’existe dans data/competences
-function guessCategory(label: string): 'Backend' | 'Frontend' | 'DevOps' | 'Qualité' | 'Soft Skills' {
-    const l = label.toLowerCase();
-    if (/(react|typescript|vue|frontend|ui|ux)/.test(l)) return 'Frontend';
-    if (/(docker|kubernetes|ci\/cd|devops|git|pipeline|infra)/.test(l)) return 'DevOps';
-    if (/(test|qualité|lint|coverage|sécurité|cve|owasp)/.test(l)) return 'Qualité';
-    if (/(communication|leadership|management|soft|humaines|collaboration|pédagogie|transmission)/.test(l)) return 'Soft Skills';
-    return 'Backend';
-}
-
-type C = {
-    id: string | number;
-    bloc: string;
-    label: string;
-    level: 0 | 1 | 2 | 3;
-    projects: string[];
-    category?: 'Backend' | 'Frontend' | 'DevOps' | 'Qualité' | 'Soft Skills';
-};
-
-const ALL_BLOCS = Array.from(new Set(competences.map((c: any) => c.bloc))) as string[];
-const CATEGORIES: Array<C['category']> = ['Backend', 'Frontend', 'DevOps', 'Qualité', 'Soft Skills'];
-type Row = { name: string; slug: string; level: number; type: 'soft'|'tech' };
+import { deriveSkillsWithEIL } from '@/lib/skills-derived';
+import SkillsRadar from '@/components/SkillsRadar';
 
 export default function CompetencesPage() {
-    const data: C[] = competences.map((c: any) => ({
-        ...c,
-        category: (c.category as C['category']) ?? guessCategory(c.label),
-    }));
+    const skills = React.useMemo(() => deriveSkillsWithEIL(rawSkills, competences, 'max'), []);
+    const HUMAINES = React.useMemo(() => skills.filter(s => s.type === 'soft'), [skills]);
+    const TECHNIQUES = React.useMemo(() => skills.filter(s => s.type === 'tech'), [skills]);
 
-    const [tab, setTab] = React.useState<0 | 1 | 2>(0); // 0: Global, 1: Techniques, 2: Humaines
-    const [bloc, setBloc] = React.useState<string | 'Tous'>('Tous');
-    const [q, setQ] = React.useState('');
-
-    const filtered = data.filter((c) => (bloc === 'Tous' ? true : c.bloc === bloc))
-        .filter((c) => (q ? c.label.toLowerCase().includes(q.toLowerCase()) : true));
-
-    const techCats: C['category'][] = ['Backend', 'Frontend', 'DevOps', 'Qualité'];
-    const humanCats: C['category'][] = ['Soft Skills'];
-
-    const cats = tab === 0 ? CATEGORIES : tab === 1 ? techCats : humanCats;
-
-    const radar: RadarDatum[] = cats.map((cat) => {
-        const items = filtered.filter((c) => c.category === cat);
-        if (items.length === 0) return { category: cat!, value: 0 };
-        const avg = items.reduce((s, c) => s + c.level, 0) / items.length; // 0–3
-        return { category: cat!, value: Math.round((avg / 3) * 100) }; // 0–100
-    });
-
-    const soft: Row[] = skills.filter(s => s.type === 'soft').map(s => ({ name: s.name, slug: s.slug, level: s.level, type: s.type }));
-    const tech: Row[] = skills.filter(s => s.type === 'tech').map(s => ({ name: s.name, slug: s.slug, level: s.level, type: s.type }));
-
-    const List = ({ title, data }: { title: string; data: Row[] }) => (
-        <Card variant="outlined">
+    const List = ({ title, items }: { title: string; items: typeof skills }) => (
+        <Card variant="outlined" sx={{ height: '100%' }}>
             <CardContent>
-                <Stack spacing={1.2}>
-                    <Typography variant="h6">{title}</Typography>
-                    <Stack spacing={1.2}>
-                        {data.map((r) => (
-                            <Stack key={r.slug} spacing={0.5}>
-                                <Stack direction="row" justifyContent="space-between" alignItems="baseline">
-                                    <Typography variant="body2">{r.name}</Typography>
-                                    <Typography variant="caption" color="text.secondary">Niveau {r.level}/5</Typography>
-                                </Stack>
-                                <LinearProgress variant="determinate" value={r.level * 20} />
-                                <Button size="small" component={InertiaLink as any} href={`/skills/${r.slug}`}>Voir la fiche</Button>
+                <Typography variant="subtitle1" gutterBottom>{title}</Typography>
+                <Stack spacing={1.5}>
+                    {items.map((s) => (
+                        <div key={s.slug}>
+                            <Stack direction="row" alignItems="center" justifyContent="space-between">
+                                <Typography variant="body2" sx={{ mr: 2 }}>
+                                    <b>{s.name}</b>
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">Niveau {s.level}/5</Typography>
                             </Stack>
-                        ))}
-                    </Stack>
+                            <LinearProgress variant="determinate" value={s.level * 20} sx={{ my: 0.5 }} />
+                            <Stack direction="row" justifyContent="flex-end">
+                                <Button size="small" component={Link as any} href={`/skills/${s.slug}`}>Voir la fiche</Button>
+                            </Stack>
+                        </div>
+                    ))}
                 </Stack>
             </CardContent>
         </Card>
     );
 
     return (
-        <Box sx={{ py: { xs: 6, md: 10 }, position: 'relative', zIndex: 2 }}>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
             <Head title="Compétences" />
-            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-                <Typography variant="h3" sx={{ mb: 1, fontWeight: 700 }}>
-                    Compétences
-                </Typography>
+            <Typography variant="h4" sx={{ mb: 1.5 }}>Compétences</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Radar global puis liste des compétences humaines et techniques. Les niveaux affichés intègrent les 18 compétences EIL (non listées séparément).
+            </Typography>
 
-                <Stack spacing={1.5} mt={4} mb={3}>
-                    <Typography variant="body1" color="text.secondary">
-                        Comparatif visuel : cliquez pour ouvrir la fiche détaillée (preuves, résultats, autocritique, évolution).
-                    </Typography>
-                </Stack>
+            {/* Radar en premier */}
+            <div style={{ marginBottom: 16 }}>
+                <SkillsRadar />
+            </div>
 
-                <Grid container spacing={2}>
-                    <Grid size={{ xs: 12, md: 6 }}><List title="Compétences humaines" data={soft} /></Grid>
-                    <Grid size={{ xs: 12, md: 6 }}><List title="Compétences techniques" data={tech} /></Grid>
+            {/* Deux listes simples, lisibles */}
+            <Grid container spacing={2}>
+                <Grid size={{ xs: 12, md: 6 }} id="humaines">
+                    <List title="Compétences humaines" items={HUMAINES} />
                 </Grid>
-
-                <Typography variant="body1" sx={{ color: 'text.secondary', mb: 3, mt: 4 }}>
-                    Carte des compétences alignée sur les blocs RNCP. Filtrez par bloc, recherchez une compétence, et visualisez le niveau au radar.
-                </Typography>
-
-                <Paper
-                    sx={{
-                        p: 2,
-                        mb: 2,
-                    }}
-                >
-                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems="center">
-                        <Tabs
-                            value={tab}
-                            onChange={(_, v) => setTab(v)}
-                            sx={{ borderRadius: 3 }}
-                        >
-                            <Tab label="Global" />
-                            <Tab label="Techniques" />
-                            <Tab label="Humaines" />
-                        </Tabs>
-
-                        <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                            <Chip
-                                label="Tous"
-                                clickable
-                                color={bloc === 'Tous' ? 'primary' : 'default'}
-                                onClick={() => setBloc('Tous')}
-                                sx={{ borderRadius: 999 }}
-                            />
-                            {ALL_BLOCS.map((b) => (
-                                <Chip
-                                    key={b}
-                                    label={b}
-                                    clickable
-                                    color={bloc === b ? 'primary' : 'default'}
-                                    onClick={() => setBloc(b)}
-                                    sx={{ borderRadius: 999 }}
-                                />
-                            ))}
-                        </Stack>
-
-                        <Box sx={{ flexGrow: 1 }} />
-
-                        <TextField
-                            value={q}
-                            onChange={(e) => setQ(e.target.value)}
-                            size="small"
-                            placeholder="Rechercher une compétence…"
-                            sx={{ minWidth: 260 }}
-                        />
-                    </Stack>
-                </Paper>
-
-                <Stack direction={{ xs: 'column', lg: 'row' }} spacing={2} sx={{ mb: 3 }}>
-                    <Box sx={{ flex: 1 }}>
-                        <SkillsRadar
-                            title={
-                                tab === 0 ? 'Radar global' : tab === 1 ? 'Radar techniques' : 'Radar soft skills'
-                            }
-                            data={radar}
-                        />
-                    </Box>
-                    <Paper
-                        sx={{
-                            p: 2,
-                            flex: 1,
-                        }}
-                    >
-                        <Typography variant="subtitle1" fontWeight={800} sx={{ mb: 1 }}>
-                            Lecture rapide
-                        </Typography>
-                        <Stack spacing={1} color="text.secondary">
-                            <Typography>• <strong>{filtered.length}</strong> compétences affichées</Typography>
-                            <Typography>• Regrouper par : {cats.join(' · ')}</Typography>
-                            <Typography>• Niveau moyen visible au radar (0–100)</Typography>
-                        </Stack>
-                    </Paper>
-                </Stack>
-
-                <TableContainer
-                    component={Paper}
-                    sx={{
-                        borderRadius: 2,
-                        overflow: 'hidden',
-                        bgcolor: (t) => (t.palette.mode === 'light' ? '#fff' : '#121212'),
-                        color: 'text.primary',
-                    }}
-                >
-                    <Table size="small" sx={{ minWidth: 960, '& th, & td': { color: 'text.primary' } }}>
-                        <TableHead>
-                            <TableRow sx={{ '& th': { fontWeight: 700 } }}>
-                                <TableCell sx={{ width: 80 }}>ID</TableCell>
-                                <TableCell sx={{ width: 90 }}>Bloc</TableCell>
-                                <TableCell sx={{ width: 220 }}>Catégorie</TableCell>
-                                <TableCell>Intitulé</TableCell>
-                                <TableCell sx={{ width: 160 }}>Niveau</TableCell>
-                                <TableCell sx={{ width: 260 }}>Preuves (projets)</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {filtered.map(({ id, bloc, label, level, projects: slugs, category }) => (
-                                <TableRow key={String(id)} hover>
-                                    <TableCell>{id}</TableCell>
-                                    <TableCell>{bloc}</TableCell>
-                                    <TableCell>{category}</TableCell>
-                                    <TableCell>{label}</TableCell>
-                                    <TableCell>
-                                        <Level v={level} />
-                                    </TableCell>
-                                    <TableCell>
-                                        <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-                                            {slugs.map((slug) => {
-                                                const p = projects.find((x) => x.slug === slug);
-                                                if (!p) return null;
-                                                return (
-                                                    <Chip
-                                                        key={slug}
-                                                        label={p.title}
-                                                        component={InertiaLink as any}
-                                                        href={`/projects/${slug}`}
-                                                        clickable
-                                                        variant="outlined"
-                                                        size="small"
-                                                        sx={{ borderRadius: 999 }}
-                                                    />
-                                                );
-                                            })}
-                                        </Stack>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Container>
-        </Box>
+                <Grid size={{ xs: 12, md: 6 }} id="techniques">
+                    <List title="Compétences techniques" items={TECHNIQUES} />
+                </Grid>
+            </Grid>
+        </Container>
     );
 }

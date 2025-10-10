@@ -113,7 +113,7 @@ export default function ProjectShow() {
             <Stack spacing={0.5} mt={1} mb={2}>
                 <Typography variant="h4">{project.title}</Typography>
                 {project.summary && (
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'pre-line' }}>
                         {project.summary}
                     </Typography>
                 )}
@@ -164,7 +164,9 @@ export default function ProjectShow() {
                                         <Typography variant="overline" display="block" gutterBottom>
                                             {labelForKey(ex.key)}
                                         </Typography>
-                                        <Typography variant="body2">{ex.summary}</Typography>
+                                        <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                            {ex.summary}
+                                        </Typography>
                                         {(ex.type || ex.status || ex.date) && (
                                             <Stack direction="row" spacing={2} mt={1}>
                                                 {ex.type && <Typography variant="caption">Type : {ex.type}</Typography>}
