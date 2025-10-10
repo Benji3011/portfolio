@@ -22,64 +22,143 @@ export type Skill = {
 };
 
 export const skills: Skill[] = [
-  {
-    slug: 'architecture-backend-laravel',
-    name: 'Architecture backend (Laravel)',
-    type: 'tech',
-    level: 4,
-    definition:
-        "Conception de modules métier Laravel (Eloquent, services, observers, jobs, policies). Contexte 2025 : attentes accrues de résilience et d’observabilité, séparation claire domaine/infra.",
-    proofs: [
-      {
-        story: "Refonte règles Contact/Entreprise (intégrité liens, notifications, validations explicites).",
-        projectSlug: 'gestion-des-contacts-entreprises',
-        result: "Baisse des erreurs de saisie et tickets liés aux incohérences d’association.",
-        valueAdded: "Clarification des règles métier et factorisation en services."
-      },
-      {
-        story: "Mise en place d’observers + jobs planifiés pour découpler effets de bord.",
-        projectSlug: 'api-observers-jobs',
-        result: "Saisie non bloquante et traitements plus robustes.",
-        valueAdded: "Architecture orientée événements, retries contrôlés."
-      }
-    ],
-    results: "Flux plus fiables, code plus maintenable, responsabilités mieux isolées.",
-    selfReview: "Bon niveau, encore perfectible sur DDD/hexagonal à l’échelle du produit.",
-    priority: 'haute',
-    acquisitionSpeed: 'rapide',
-    evolution: "Généraliser les ‘domain services’ et mapper proprement les événements de domaine.",
-    trainingsPlanned: ["DDD appliqué à Laravel (Q4 2025)", "Observabilité applicative (metrics/logs)"],
-    relatedProjects: ['gestion-des-contacts-entreprises', 'api-observers-jobs']
-  },
+  // 1) Intégrations APIs (HubSpot, Smartsheet…)
   {
     slug: 'integration-apis',
     name: 'Intégrations APIs (HubSpot, Smartsheet…)',
     type: 'tech',
     level: 4,
-    definition:
-        "Conception de connecteurs REST (mappages champs, idempotence, gestion d’erreurs). Actualité : changements fréquents d’API et exigences RGPD → logs & sandbox indispensables.",
+    definition: `Concevoir, maintenir et fiabiliser des intégrations entre le CRM et des services externes. 
+De la compréhension fonctionnelle du besoin (quelles données, à quelle fréquence, dans quel sens) jusqu’à la mise en œuvre technique et la supervision des échanges. 
+Cette compétence demande rigueur, autonomie et communication constante entre équipes techniques et métiers.`,
     proofs: [
       {
-        story: "Connecteur HubSpot pour synchroniser les IDs et champs clés côté CRM.",
+        story: `Refonte complète du connecteur HubSpot ↔ CRM : audit du legacy, refactor Laravel 10, centralisation des appels API v3 et ajout d'une sandbox HubSpot pour tester les échanges en conditions réelles.`,
         projectSlug: 'integration-hubspot',
-        result: "Réduction des écarts de données et des interventions manuelles.",
-        valueAdded: "Mappages documentés et contrôles de droits."
+        result: `Synchronisations fiabilisées, disparition des incidents de doublons, visibilité claire sur les flux et les erreurs.`,
+        valueAdded: `Capacité à partir d’un code obsolète pour le rendre maintenable, robuste et testable. Mise en place d’un environnement de test intégré au cycle de développement.`
       },
       {
-        story: "Échanges Smartsheet (import/export) avec validations préalables.",
-        projectSlug: 'integration-hubspot',
-        result: "Import plus fiable, erreurs actionnables.",
-        valueAdded: "Tests de contrat simples et remontées explicites."
+        story: `Participation à l'intégration Smartsheet : analyse des schémas de données et conception d’un mapping dynamique pour alimenter les feuilles projets à partir du CRM.`,
+        projectSlug: 'integration-smartsheet',
+        result: `Alignement automatique des données projets entre CRM et Smartsheet, suppression de la double saisie côté CSM.`,
+        valueAdded: `Compréhension du modèle de données métier, fiabilisation du cycle d’échanges, amélioration de la collaboration entre R&D et CSM.`
+      },
+      {
+        story: `Contribution aux échanges API internes (CRM ↔ Portail RH) : création de routes REST sécurisées et documentation des endpoints partagés.`,
+        projectSlug: 'api-observers-jobs',
+        result: `Interopérabilité renforcée entre modules, uniformisation des pratiques d’appel API et meilleure réutilisabilité.`,
+        valueAdded: `Standardisation de la structure des contrôleurs et middleware d’authentification API.`
       }
     ],
-    results: "Données plus fiables entre outils, meilleure traçabilité.",
-    selfReview: "Rigoureux mais encore améliorable en sandbox systématique.",
+    results: `Des flux inter-applicatifs fiables, traçables et maintenables. 
+Les intégrations ne sont plus des “zones grises” : elles sont documentées, supervisées et intégrées au cycle agile.`,
+    selfReview: `Bonne maîtrise des intégrations REST et des mécanismes asynchrones (jobs, webhooks, retry). 
+Prochain cap : renforcer la validation automatisée (tests de contrat, sandbox systématique).`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Industrialiser le monitoring des intégrations (alertes, dashboards), 
+généraliser les tests contractuels et structurer une bibliothèque interne de connecteurs.`,
+    trainingsPlanned: ['API Contract Testing (Pact)', 'API Observability – Q2 2025'],
+    relatedProjects: ['integration-hubspot', 'integration-smartsheet', 'api-observers-jobs']
+  },
+
+// 2) Architecture backend (Laravel)
+  {
+    slug: 'architecture-backend-laravel',
+    name: 'Architecture backend (Laravel)',
+    type: 'tech',
+    level: 4,
+    definition: `Refactoriser du code legacy vers une base maintenable: services métier, jobs/queues, observers, séparation claire domaine/transport. Objectif: résilience et lisibilité.`,
+    proofs: [
+      {
+        story: `Extraction de la logique HubSpot dans des services dédiés et jobs asynchrones; suppression des effets de bord, gestion centralisée des erreurs.`,
+        projectSlug: 'integration-hubspot',
+        result: `Synchronisations prévisibles et stables, code testable, onboarding dev facilité.`,
+        valueAdded: `Découplage propre (services, jobs), conventions claires, points d’extension identifiés.`
+      }
+    ],
+    results: `Baisse de la complexité, meilleure maintenabilité et temps de résolution d’incidents réduit.`,
+    selfReview: `Encore des marges pour pousser DDD/hexagonal sur des modules transverses.`,
     priority: 'haute',
     acquisitionSpeed: 'normale',
-    evolution: "Standardiser un adapter par domaine + tester la rétrocompatibilité.",
-    trainingsPlanned: ["API Contract Testing (Pact) – Q1 2026"],
+    evolution: `Introduire des "domain services" partout où c’est pertinent et des ports/adapters sur les intégrations.`,
+    trainingsPlanned: ['DDD appliqué à Laravel – Q4 2025'],
     relatedProjects: ['integration-hubspot']
   },
+
+// 3) Communication technique
+  {
+    slug: 'communication-technique',
+    name: 'Communication technique',
+    type: 'soft',
+    level: 4,
+    definition: `Aligner devs, support et métiers autour de règles métier compréhensibles et de compromis documentés; rendre les erreurs actionnables et les décisions traçables.`,
+    proofs: [
+      {
+        story: `Formalisation des cas d’échanges HubSpot (qui pousse quoi, quand, avec quels champs) + exemples concrets pour le support et le marketing.`,
+        projectSlug: 'integration-hubspot',
+        result: `Moins de malentendus, diagnostics plus rapides, meilleure prévisibilité des mises en prod.`,
+        valueAdded: `Documents courts, orientés usages; messages d’erreur exploitables; schémas simples.`
+      }
+    ],
+    results: `Décisions plus rapides et partagées, attentes réalistes côté métiers.`,
+    selfReview: `Parfois trop détaillé; je tends vers des formats plus "lite" quand c’est suffisant.`,
+    priority: 'moyenne',
+    acquisitionSpeed: 'normale',
+    evolution: `Généraliser les checklists de validation et les mini-schémas dans la doc.`,
+    trainingsPlanned: ['Tech writing pragmatique – autoformation'],
+    relatedProjects: ['integration-hubspot']
+  },
+
+// 4) Documentation & transfert
+  {
+    slug: 'documentation-transfert',
+    name: 'Documentation & transfert',
+    type: 'soft',
+    level: 4,
+    definition: `Produire des docs utiles (techniques et fonctionnelles) centrées sur l’exploitation: flux, endpoints, payloads, scénarios, runbooks et garde-fous (RGPD/sandbox).`,
+    proofs: [
+      {
+        story: `Rédaction d’une doc technique (flux, endpoints, erreurs courantes) et d’une doc fonctionnelle (scénarios de synchro, cycles) pour HubSpot.`,
+        projectSlug: 'integration-hubspot',
+        result: `Onboarding accéléré, autonomie du support, continuité en cas de changement d’intervenants.`,
+        valueAdded: `Structure stable (vue d’ensemble → cas d’usage → détails), liens croisés vers le code.`
+      }
+    ],
+    results: `Moins de connaissance "tribale", transfert facilité et pérennité accrue.`,
+    selfReview: `Risque de sur-documentation; je m’impose des limites de longueur et des annexes.`,
+    priority: 'moyenne',
+    acquisitionSpeed: 'normale',
+    evolution: `Mutualiser des modèles de pages (flux, mapping) et un glossaire partagé.`,
+    trainingsPlanned: ['Runbooks efficaces – autoformation'],
+    relatedProjects: ['integration-hubspot']
+  },
+
+// 5) Gestion de projet (agile)
+  {
+    slug: 'gestion-de-projet-agile',
+    name: 'Gestion de projet (agile)',
+    type: 'soft',
+    level: 4,
+    definition: `Découper en incréments livrables, prioriser avec les interlocuteurs, cadencer les validations (sandbox) et sécuriser la mise en production.`,
+    proofs: [
+      {
+        story: `Plan de reprise HubSpot en étapes: refactor → sandbox → mappages → erreurs/retries → doc; validations intermédiaires avec marketing/support.`,
+        projectSlug: 'integration-hubspot',
+        result: `Livraisons plus sereines, détection précoce des angles morts, moins de retours "surprise".`,
+        valueAdded: `Roadmap pragmatique, feedbacks réguliers, critères d’acceptation clairs.`
+      }
+    ],
+    results: `Prévisibilité accrue et meilleure adhésion des parties prenantes.`,
+    selfReview: `Je peux mieux quantifier (lead time/throughput) pour objectiver les gains.`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Mettre 2–3 métriques simples et un mini rituel GO/NO-GO.`,
+    trainingsPlanned: ['Metrics agiles pragmatiques – autoformation'],
+    relatedProjects: ['integration-hubspot']
+  },
+
   {
     slug: 'data-modeling-sql',
     name: 'Modélisation & SQL',
@@ -150,52 +229,6 @@ export const skills: Skill[] = [
     relatedProjects: ['facturation-documents-pdf-devis-facture']
   },
   {
-    slug: 'gestion-de-projet-agile',
-    name: 'Gestion de projet (agile)',
-    type: 'soft',
-    level: 4,
-    definition:
-        "Incréments courts, priorisation, feedback. Contexte : forte transversalité (R&D, Support, CSM) → besoin de visibilité fréquente.",
-    proofs: [
-      {
-        story: "Découpage incréments CRM (contacts/entreprises, PDF).",
-        projectSlug: 'gestion-des-contacts-entreprises',
-        result: "Cycle plus court, obstacles identifiés tôt.",
-        valueAdded: "Roadmap réaliste + communication claire."
-      }
-    ],
-    results: "Meilleure prévisibilité et adhésion des acteurs.",
-    selfReview: "Solide en delivery, encore mieux quantifier l’impact.",
-    priority: 'haute',
-    acquisitionSpeed: 'rapide',
-    evolution: "Mettre en place 2–3 métriques simples (lead time/throughput).",
-    trainingsPlanned: ["Metrics agiles pragmatiques (autoformation)"],
-    relatedProjects: ['gestion-des-contacts-entreprises']
-  },
-  {
-    slug: 'communication-technique',
-    name: 'Communication technique',
-    type: 'soft',
-    level: 4,
-    definition:
-        "Explicitation des règles métier et compromis, docs utiles. Contexte : équipes hybrides et turnover → docs courtes mais actionnables.",
-    proofs: [
-      {
-        story: "Règles association contact/entreprise clarifiées.",
-        projectSlug: 'gestion-des-contacts-entreprises',
-        result: "Moins de malentendus, tickets mieux qualifiés.",
-        valueAdded: "Doc orientée cas d’usage + messages d’erreur utiles."
-      }
-    ],
-    results: "Décisions plus rapides et partagées.",
-    selfReview: "Parfois trop détaillé quand une version ‘light’ suffit.",
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: "Plus de schémas courts et checklists.",
-    trainingsPlanned: ["Docs as code — bonnes pratiques"],
-    relatedProjects: ['gestion-des-contacts-entreprises']
-  },
-  {
     slug: 'problem-solving',
     name: 'Résolution de problèmes',
     type: 'soft',
@@ -217,29 +250,6 @@ export const skills: Skill[] = [
     evolution: "Observer plus tôt via alertes/metrics.",
     trainingsPlanned: ["Incident response fundamentals"],
     relatedProjects: ['facturation-documents-pdf-devis-facture']
-  },
-  {
-    slug: 'documentation-transfert',
-    name: 'Documentation & transfert',
-    type: 'soft',
-    level: 4,
-    definition:
-        "Docs pratiques pour devs/ops, centrées maintenance. Contexte : onboarding plus rapide attendu côté entreprise.",
-    proofs: [
-      {
-        story: "Docs flux CRM↔HubSpot (mappages + règles).",
-        projectSlug: 'integration-hubspot',
-        result: "Moins de ‘tribal knowledge’, onboarding accéléré.",
-        valueAdded: "Structure par cas d’usage + runbooks courts."
-      }
-    ],
-    results: "Moins de dépendance au tacite, continuité assurée.",
-    selfReview: "Raccourcir certaines pages longues.",
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: "Mutualiser modèles de doc et checklists.",
-    trainingsPlanned: ["Runbooks efficaces (autoformation)"],
-    relatedProjects: ['integration-hubspot']
   },
   {
     slug: 'collaboration-cross-team',

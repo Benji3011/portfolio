@@ -13,7 +13,6 @@ export default function SkillLevel({ level }: Props) {
                     aria-hidden
                 />
             ))}
-            <span className="text-xs ml-2 opacity-70">Niveau {level}/5</span>
         </div>
     );
 }

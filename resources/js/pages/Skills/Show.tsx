@@ -2,20 +2,23 @@ import React, { useMemo } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import {
     Container, Stack, Typography, Chip, Card, CardContent,
-    Divider, Button
+    Divider, Button, Box
 } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { skills, Skill } from '@/data/skills';
 import { projects, Project } from '@/data/projects';
 import ProjectCard from '@/components/ProjectCard';
 import SkillLevel from '@/components/SkillLevel';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 type PageProps = { slug?: string };
 
 const makeProjectHref = (slug: string) => {
-    try { // @ts-ignore
+    try {
+        // @ts-ignore
         return route('projects.show', { slug });
-    } catch { return `/projects/${slug}`; }
+    } catch {
+        return `/projects/${slug}`;
+    }
 };
 
 export default function SkillShow() {
@@ -32,8 +35,7 @@ export default function SkillShow() {
         [slug]
     );
 
-    // @ts-ignore
-    const anchor = skill.type === 'soft' ? '#humaines' : '#techniques';
+    const anchor = skill?.type === 'soft' ? '#humaines' : '#techniques';
     const backHref = `/competences${anchor}`;
 
     const relatedProjects: Project[] = useMemo(() => {
@@ -51,7 +53,7 @@ export default function SkillShow() {
             <Container maxWidth="md">
                 <Stack mt={4} spacing={2}>
                     <Typography variant="h5">Compétence introuvable</Typography>
-                    <Link href="/skills" className="underline">← Retour</Link>
+                    <Link href="/competences" className="underline">← Retour</Link>
                 </Stack>
             </Container>
         );
@@ -60,7 +62,8 @@ export default function SkillShow() {
     return (
         <>
             <Head title={skill.name} />
-            <Container maxWidth="md">
+            <Container maxWidth="md" sx={{ py: 3 }}>
+                {/* Back */}
                 <Stack direction="row" justifyContent="flex-start" sx={{ mb: 1 }}>
                     <Button
                         component={Link as any}
@@ -72,82 +75,145 @@ export default function SkillShow() {
                         Retour aux compétences
                     </Button>
                 </Stack>
-                <Stack spacing={0.5} mt={4} mb={2}>
+
+                {/* Header */}
+                <Stack spacing={0.5} mt={1} mb={1.5}>
                     <Typography variant="h4">{skill.name}</Typography>
                     <Typography variant="body2" color="text.secondary">
                         {skill.type === 'tech' ? 'Compétence technique' : 'Compétence humaine'}
                     </Typography>
                 </Stack>
 
-                <Stack direction="row" alignItems="center" spacing={2} mb={2}>
-                    <SkillLevel level={skill.level} />
-                    <Chip size="small" label={`Priorité: ${skill.priority}`} />
-                    <Chip size="small" label={`Acquisition: ${skill.acquisitionSpeed}`} />
-                </Stack>
-
+                {/* Résumé compact (niveau + méta) */}
                 <Card variant="outlined" sx={{ mb: 2 }}>
                     <CardContent>
-                        <Typography variant="subtitle1" gutterBottom>Définition & contexte</Typography>
-                        <Divider sx={{ mb: 1 }} />
-                        <Typography variant="body2">{skill.definition}</Typography>
+                        <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            spacing={1.5}
+                            alignItems={{ xs: 'flex-start', sm: 'center' }}
+                            justifyContent="space-between"
+                        >
+                            <Stack direction="row" alignItems="center" spacing={2}>
+                                <SkillLevel level={skill.level} />
+                                <Typography variant="body2" color="text.secondary">
+                                    Niveau {skill.level}/5
+                                </Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                                <Chip size="small" label={`Priorité : ${skill.priority}`} />
+                                <Chip size="small" label={`Acquisition : ${skill.acquisitionSpeed}`} />
+                            </Stack>
+                        </Stack>
                     </CardContent>
                 </Card>
 
+                {/* Définition & contexte */}
+                {skill.definition && (
+                    <Card variant="outlined" sx={{ mb: 2 }}>
+                        <CardContent>
+                            <Typography variant="subtitle1" gutterBottom>Définition & contexte</Typography>
+                            <Divider sx={{ mb: 1 }} />
+                            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                {skill.definition}
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Éléments de preuve */}
                 {!!skill.proofs?.length && (
                     <Card variant="outlined" sx={{ mb: 2 }}>
                         <CardContent>
                             <Typography variant="subtitle1" gutterBottom>Éléments de preuve</Typography>
                             <Divider sx={{ mb: 1 }} />
-                            <Stack spacing={2}>
+                            <Stack spacing={1.5} divider={<Divider flexItem />}>
                                 {skill.proofs.map((p, i) => (
-                                    <div key={i}>
-                                        <Typography variant="body2">{p.story}</Typography>
-                                        <Stack direction="row" spacing={2} mt={0.5}>
-                                            {p.result && <Typography variant="caption">Résultat : {p.result}</Typography>}
-                                            {p.valueAdded && <Typography variant="caption">Valeur ajoutée : {p.valueAdded}</Typography>}
-                                            {p.projectSlug && (
-                                                <Typography variant="caption">
-                                                    Voir la réalisation : <Link href={makeProjectHref(p.projectSlug)} className="underline">{p.projectSlug}</Link>
-                                                </Typography>
-                                            )}
-                                        </Stack>
-                                    </div>
+                                    <Box key={i}>
+                                        <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                            {p.story}
+                                        </Typography>
+
+                                        {/* Ligne méta compacte */}
+                                        {(p.result || p.valueAdded || p.projectSlug) && (
+                                            <Stack direction="row" spacing={1} mt={0.75} flexWrap="wrap" useFlexGap>
+                                                {p.result && (
+                                                    <Chip
+                                                        size="small"
+                                                        color="success"
+                                                        variant="outlined"
+                                                        label={`Résultat : ${p.result}`}
+                                                    />
+                                                )}
+                                                {p.valueAdded && (
+                                                    <Chip
+                                                        size="small"
+                                                        color="primary"
+                                                        variant="outlined"
+                                                        label={`Valeur ajoutée : ${p.valueAdded}`}
+                                                    />
+                                                )}
+                                                {p.projectSlug && (
+                                                    <Chip
+                                                        size="small"
+                                                        variant="outlined"
+                                                        component={Link as any}
+                                                        href={makeProjectHref(p.projectSlug)}
+                                                        clickable
+                                                        label="Voir la réalisation"
+                                                    />
+                                                )}
+                                            </Stack>
+                                        )}
+                                    </Box>
                                 ))}
                             </Stack>
                         </CardContent>
                     </Card>
                 )}
 
+                {/* Résultats globaux */}
                 {skill.results && (
                     <Card variant="outlined" sx={{ mb: 2 }}>
                         <CardContent>
                             <Typography variant="subtitle1" gutterBottom>Résultats</Typography>
                             <Divider sx={{ mb: 1 }} />
-                            <Typography variant="body2">{skill.results}</Typography>
+                            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                {skill.results}
+                            </Typography>
                         </CardContent>
                     </Card>
                 )}
 
+                {/* Auto-critique */}
                 {skill.selfReview && (
                     <Card variant="outlined" sx={{ mb: 2 }}>
                         <CardContent>
                             <Typography variant="subtitle1" gutterBottom>Auto-critique</Typography>
                             <Divider sx={{ mb: 1 }} />
-                            <Typography variant="body2">{skill.selfReview}</Typography>
+                            <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                {skill.selfReview}
+                            </Typography>
                         </CardContent>
                     </Card>
                 )}
 
-                {skill.evolution && (
+                {/* Évolution & formations */}
+                {(skill.evolution || (skill.trainingsPlanned?.length ?? 0) > 0) && (
                     <Card variant="outlined" sx={{ mb: 2 }}>
                         <CardContent>
                             <Typography variant="subtitle1" gutterBottom>Évolution</Typography>
                             <Divider sx={{ mb: 1 }} />
-                            <Typography variant="body2">{skill.evolution}</Typography>
+                            {skill.evolution && (
+                                <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
+                                    {skill.evolution}
+                                </Typography>
+                            )}
                             {!!skill.trainingsPlanned?.length && (
                                 <Stack spacing={0.5} mt={1}>
                                     {skill.trainingsPlanned.map((t, i) => (
-                                        <Typography key={i} variant="caption">• {t}</Typography>
+                                        <Typography key={i} variant="caption">
+                                            • {t}
+                                        </Typography>
                                     ))}
                                 </Stack>
                             )}
@@ -155,6 +221,7 @@ export default function SkillShow() {
                     </Card>
                 )}
 
+                {/* Réalisations liées */}
                 {!!relatedProjects.length && (
                     <>
                         <Typography variant="h6" sx={{ mt: 3, mb: 1.5 }}>Réalisations liées</Typography>
@@ -166,12 +233,21 @@ export default function SkillShow() {
                     </>
                 )}
 
+                {/* Voir aussi */}
                 {!!seeAlso.length && (
                     <>
                         <Typography variant="h6" sx={{ mt: 3, mb: 1 }}>Voir aussi</Typography>
                         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                             {seeAlso.map((s) => (
-                                <Chip key={s.slug} label={s.name} component={Link as any} href={`/skills/${s.slug}`} clickable size="small" variant="outlined" />
+                                <Chip
+                                    key={s.slug}
+                                    label={s.name}
+                                    component={Link as any}
+                                    href={`/skills/${s.slug}`}
+                                    clickable
+                                    size="small"
+                                    variant="outlined"
+                                />
                             ))}
                         </Stack>
                     </>
