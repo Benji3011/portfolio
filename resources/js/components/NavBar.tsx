@@ -80,6 +80,12 @@ export default function NavBar({ mode, toggleMode, userName, avatarUrl }: Readon
                 }}
             >
                 <Toolbar sx={{ minHeight: 72, px: { xs: 2, sm: 4 } }}>
+                    {/* Bloc identité visible aussi en mobile */}
+                    <Box sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center', gap: 1, mr: 2 }}>
+                        <Avatar src="/profil.jpg" alt="Benjamin Boudry" sx={{ width: 28, height: 28 }} />
+                        <Typography variant="body2" fontWeight={600}>Benjamin Boudry</Typography>
+                    </Box>
+
                     <Stack direction="row" spacing={1} alignItems="center" sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}>
                         <Avatar sx={{ width: 32, height: 32 }} alt="Profil" src="/profil.jpg" />
                         <Typography variant="body2">Benjamin Boudry</Typography>

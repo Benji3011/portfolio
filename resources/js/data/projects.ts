@@ -6,545 +6,117 @@ export type Project = {
   tech: string[];
   highlights: string[];
   examples: Array<{ key: string; summary: string; type?: string; status?: string; date?: string }>;
-  timeframe?: { start: string; end: string };
+  timeframe?: { start: string; end?: string };
 };
 
 export const projects: Project[] = [
   {
-    "slug": "gestion-des-contacts-entreprises",
-    "title": "Gestion des contacts & entreprises",
-    "summary": "Conception et durcissement des règles métier autour des entités Contact/Company (main‑contact, cohérence des relations, notifications, intégrité).",
-    "tags": [
-      "contacts",
-      "company",
-      "main-contact",
-      "relation",
-      "CRM"
+    slug: 'gestion-des-contacts-entreprises',
+    title: 'Gestion des contacts & entreprises',
+    summary: 'Durcissement des règles métier (intégrité liens, statuts, notifications) et meilleure UX de gestion.',
+    tags: ['CRM', 'Back-office', 'Règles métier'],
+    tech: ['Laravel', 'Eloquent', 'MySQL', 'React', 'Inertia', 'MUI'],
+    highlights: [
+      'Règles explicites de création/association',
+      'Validations et messages d’erreur utiles',
+      'Composants UI réutilisables'
     ],
-    "tech": [
-      "Laravel 11",
-      "PHP 8.2",
-      "Eloquent ORM",
-      "MariaDB/MySQL",
-      "Blade",
-      "Policies"
+    examples: [
+      { key: 'definition', summary: 'Mettre fin aux incohérences contact/entreprise et rendre les erreurs actionnables.' },
+      { key: 'objectif',  summary: 'Réduire les tickets support liés aux mauvais liens/notifications.' },
+      { key: 'etapes',    summary: 'Cartographie règles → validations → refacto Eloquent → écrans MUI.' },
+      { key: 'acteurs',   summary: 'R&D, Support, CSM, métier.' },
+      { key: 'resultats_entreprise', summary: 'Baisse des erreurs de saisie et des interventions support.' },
+      { key: 'resultats_pour_moi',   summary: 'Meilleure maîtrise des patterns de validation et services de domaine.' },
+      { key: 'lendemains_immediat',  summary: 'Petits tutoriels intégrés et hints contextuels.' },
+      { key: 'lendemains_moyen_terme', summary: 'Indicateurs d’usage et audit périodique des règles.' },
+      { key: 'lendemains_aujourdhui', summary: 'Règles stables ; ajustements au fil des retours.' },
+      { key: 'regard',    summary: 'Aller vers un DDD light (domain services + policies resserrées).' }
     ],
-    "highlights": [
-      "Règle *main‑contact* robuste (attach/detach/update) + notifications automatiques",
-      "Harmonisation des relations Contact↔Company et validation de données",
-      "Réduction des régressions via tests ciblés sur les cas limites"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
+    timeframe: { start: '2024-02', end: '2024-11' }
   },
   {
-    "slug": "facturation-documents-pdf-devis-facture",
-    "title": "Facturation & documents (PDF, devis, facture)",
-    "summary": "Refonte/ajouts autour des documents opérationnels (devis/factures/PDF), amélioration des gabarits et de la fidélité d’impression/export.",
-    "tags": [
-      "pdf",
-      "devis",
-      "facture",
-      "export"
+    slug: 'facturation-documents-pdf-devis-facture',
+    title: 'Stabilisation PDF (devis, factures)',
+    summary: 'Refonte des gabarits et sécurisation de la génération pour éviter les erreurs bloquantes.',
+    tags: ['Billing', 'PDF'],
+    tech: ['Laravel', 'DOMPDF', 'Blade', 'Pipelines CI'],
+    highlights: ['Gabarits unifiés', 'Vérifications pré-release', 'Messages d’erreur clairs'],
+    examples: [
+      { key: 'definition', summary: 'Standardiser la génération de documents commerciaux.' },
+      { key: 'objectif',  summary: 'Supprimer les échecs de génération et incohérences visuelles.' },
+      { key: 'etapes',    summary: 'Audit gabarits → refacto → tests visuels simples → CI.' },
+      { key: 'acteurs',   summary: 'R&D, Support facturation.' },
+      { key: 'resultats_entreprise', summary: 'Régressions en baisse, incidents rarissimes.' },
+      { key: 'resultats_pour_moi',   summary: 'Expérience CI/CD renforcée + gestion des templates.' },
+      { key: 'lendemains_immediat',  summary: 'Ajout d’assertions visuelles minimales en CI.' },
+      { key: 'lendemains_moyen_terme', summary: 'Exploration d’un moteur de templates plus découplé.' },
+      { key: 'lendemains_aujourdhui', summary: 'Surveillance légère des régressions post-release.' },
+      { key: 'regard',    summary: 'Aller vers des snapshots visuels plus complets.' }
     ],
-    "tech": [
-      "Laravel 11",
-      "PDF (génération)",
-      "Blade",
-      "File Storage"
-    ],
-    "highlights": [
-      "Templates rationalisés et plus lisibles",
-      "Corrections d’alignement/mise en page et fiabilité d’export",
-      "Meilleure traçabilité des documents générés"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
+    timeframe: { start: '2024-05', end: '2024-10' }
   },
   {
-    "slug": "autres-divers-support-refactor",
-    "title": "Autres (divers / support / refactor)",
-    "summary": "Correctifs, améliorations continues et refactoring ciblé pour stabiliser le socle applicatif.",
-    "tags": [
-      "support",
-      "refactor"
+    slug: 'integration-hubspot',
+    title: 'Connecteur HubSpot',
+    summary: 'Synchronisation d’IDs et champs clés entre CRM et HubSpot avec contrôles de droits.',
+    tags: ['API', 'Intégration', 'Data'],
+    tech: ['Laravel', 'HTTP Client', 'HubSpot API', 'Jobs', 'Queues'],
+    highlights: ['Mappage documenté', 'Idempotence', 'Journalisation d’erreurs'],
+    examples: [
+      { key: 'definition', summary: 'Assurer une vue unifiée des données client.' },
+      { key: 'objectif',  summary: 'Réduire les écarts entre CRM et HubSpot.' },
+      { key: 'etapes',    summary: 'Schéma de flux → adaptateur HubSpot → files/retries → logs.' },
+      { key: 'acteurs',   summary: 'R&D, Marketing (HubSpot), CSM.' },
+      { key: 'resultats_entreprise', summary: 'Données alignées, moins de corrections manuelles.' },
+      { key: 'resultats_pour_moi',   summary: 'Montée en maîtrise sur intégrations robustes.' },
+      { key: 'lendemains_immediat',  summary: 'Consolider logs et cas d’erreurs fréquents.' },
+      { key: 'lendemains_moyen_terme', summary: 'Tests de contrat et sandbox systématiques.' },
+      { key: 'lendemains_aujourdhui', summary: 'Flux stables, ajustements mineurs.' },
+      { key: 'regard',    summary: 'Standardiser un “SDK” interne minimal par domaine.' }
     ],
-    "tech": [
-      "Laravel 11",
-      "PHP 8.2"
-    ],
-    "highlights": [
-      "Résolution de bugs bloquants pour les équipes",
-      "Petites améliorations UX et perf",
-      "Nettoyage de dette technique opportuniste"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
+    timeframe: { start: '2024-03', end: '2025-02' }
   },
   {
-    "slug": "interfaces-ux-blade-react-modales-editeur",
-    "title": "Interfaces & UX (Blade, React, modales, éditeur)",
-    "summary": "Améliorations UX côté interface (modales, WYSIWYG, composants de sélection, tableaux dynamiques, correctifs CSS et pages portfolio).",
-    "tags": [
-      "ui",
-      "ux",
-      "modal",
-      "tinymce",
-      "select2",
-      "datatable",
-      "metronic",
-      "hero"
+    slug: 'crm-contentieux',
+    title: 'Module de gestion des contentieux',
+    summary: 'Suivi des litiges : phases, sources, coûts, jalons et états courants.',
+    tags: ['CRM', 'Workflow', 'Reporting'],
+    tech: ['Laravel', 'MySQL', 'Eloquent', 'Blade/React'],
+    highlights: ['Modèle clair (phases/états)', 'Dernier état requêtable', 'Tableaux filtrables'],
+    examples: [
+      { key: 'definition', summary: 'Donner une vision fiable de l’état des litiges.' },
+      { key: 'objectif',  summary: 'Sécuriser la lecture du “dernier état” et la planification.' },
+      { key: 'etapes',    summary: 'Modélisation → requêtes agrégées → écrans filtrables.' },
+      { key: 'acteurs',   summary: 'R&D, Juridique/Métier, CSM.' },
+      { key: 'resultats_entreprise', summary: 'Reporting plus juste, décisions plus rapides.' },
+      { key: 'resultats_pour_moi',   summary: 'Pratique sur SQL agrégé et indexation.' },
+      { key: 'lendemains_immediat',  summary: 'Exports standardisés (CSV/PDF).' },
+      { key: 'lendemains_moyen_terme', summary: 'Graphiques dédiés et alertes d’échéances.' },
+      { key: 'lendemains_aujourdhui', summary: 'Itérations selon retours des utilisateurs.' },
+      { key: 'regard',    summary: 'Poursuivre l’optimisation SQL (indexes, vues).' }
     ],
-    "tech": [
-      "Blade",
-      "jQuery",
-      "TinyMCE",
-      "Select2",
-      "DataTables",
-      "Metronic",
-      "CSS",
-      "React/TS"
-    ],
-    "highlights": [
-      "Modales stables (réouverture, focus, hauteur éditeur TinyMCE)",
-      "Tables filtrables (DataTables) et sélecteurs avancés (Select2)",
-      "Corrections CSS (Metronic/Hero) pour un rendu propre"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
+    timeframe: { start: '2024-06', end: '2025-01' }
   },
   {
-    "slug": "devops-ci-qualite",
-    "title": "DevOps/CI & Qualité",
-    "summary": "Montée en qualité et industrialisation (Docker/CI/CD/tests) pour des livraisons plus sûres.",
-    "tags": [
-      "docker",
-      "ci",
-      "pipeline",
-      "tests"
+    slug: 'api-observers-jobs',
+    title: 'Observers & Jobs planifiés',
+    summary: 'Traitements asynchrones robustes (observers, files, retries) pour découpler et fiabiliser.',
+    tags: ['Backend', 'Resilience'],
+    tech: ['Laravel', 'Queues', 'Scheduler', 'Monolog'],
+    highlights: ['Découplage effets de bord', 'Retries contrôlés', 'Monitoring basique'],
+    examples: [
+      { key: 'definition', summary: 'Éviter les effets secondaires lors de la saisie.' },
+      { key: 'objectif',  summary: 'Rendre les tâches non bloquantes et observables.' },
+      { key: 'etapes',    summary: 'Observers → jobs → retries → alertes log.' },
+      { key: 'acteurs',   summary: 'R&D, Support.' },
+      { key: 'resultats_entreprise', summary: 'Moins d’échecs visibles, UX plus fluide.' },
+      { key: 'resultats_pour_moi',   summary: 'Expérience renforcée sur la résilience applicative.' },
+      { key: 'lendemains_immediat',  summary: 'Dead-letter queue + alertes Slack.' },
+      { key: 'lendemains_moyen_terme', summary: 'Dashboards d’observabilité (metrics).' },
+      { key: 'lendemains_aujourdhui', summary: 'Surveillance légère et ajustements.' },
+      { key: 'regard',    summary: 'Étendre l’observabilité (tracing) si besoin.' }
     ],
-    "tech": [
-      "Docker",
-      "Docker Compose",
-      "GitLab CI",
-      "PHPUnit"
-    ],
-    "highlights": [
-      "Exécution CI GitLab et standardisation Docker/Compose",
-      "Stabilisation de tests unitaires pour zones critiques",
-      "Hygiène de code (linters/refactors ciblés)"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
-  },
-  {
-    "slug": "gestion-des-contentieux-litigation",
-    "title": "Gestion des contentieux (Litigation)",
-    "summary": "Mise en place et évolution du module de contentieux : phases, dates clés, états, coûts, churn et communication vers UAE/CSM.",
-    "tags": [
-      "litigation",
-      "churn",
-      "phase",
-      "next_step"
-    ],
-    "tech": [
-      "Laravel 11",
-      "Eloquent ORM",
-      "Business rules",
-      "Notifications"
-    ],
-    "highlights": [
-      "Pilotage par phases + *date_next_step* et clôtures",
-      "Suivi des coûts/états et visibilité des prochaines actions",
-      "Notification UAE/CSM pour les changements critiques"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
-  },
-  {
-    "slug": "integration-hubspot-synchronisation-crm",
-    "title": "Intégration HubSpot & synchronisation CRM",
-    "summary": "Synchronisation CRM ↔ HubSpot (company/deal/pipeline), gestion des écarts et fiabilisation des envois côté API.",
-    "tags": [
-      "hubspot",
-      "sync",
-      "company",
-      "deal",
-      "pipeline"
-    ],
-    "tech": [
-      "HubSpot API",
-      "Laravel HTTP Client",
-      "Queues/Jobs (si applicable)"
-    ],
-    "highlights": [
-      "Découplage *partenaire* (write) / *api* (sync) clarifié",
-      "Gestion des décalages de persistance avant envoi HubSpot",
-      "Monitoring des envois et reprise sur incident"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
-  },
-  {
-    "slug": "securite-permissions-authz-authn",
-    "title": "Sécurité & Permissions (AuthZ/AuthN)",
-    "summary": "Durcissement des accès via Policies/Middlewares et traitement des erreurs 403 sur actions sensibles.",
-    "tags": [
-      "403",
-      "authz",
-      "policy",
-      "middleware"
-    ],
-    "tech": [
-      "Laravel Policies",
-      "Middleware",
-      "Gates"
-    ],
-    "highlights": [
-      "Policies/middlewares renforcés sur actions sensibles",
-      "Diagnostic et correction d’erreurs 403 non loggées",
-      "Meilleure visibilité des permissions côté code"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
-  },
-  {
-    "slug": "api-observers-jobs",
-    "title": "API & Observers & Jobs",
-    "summary": "Chaînage d’events/observers, jobs/queues et webhooks pour automatiser des processus clés.",
-    "tags": [
-      "observer",
-      "event",
-      "job",
-      "queue",
-      "webhook"
-    ],
-    "tech": [
-      "Laravel Events",
-      "Observers",
-      "Jobs/Queues",
-      "Scheduler"
-    ],
-    "highlights": [
-      "Observers sur événements de domaine (attach/detach/update)",
-      "Jobs/queues pour tâches asynchrones",
-      "Planification/scheduling pour opérations régulières"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      },
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
-  },
-  {
-    "slug": "modele-de-donnees-migrations",
-    "title": "Modèle de données & migrations",
-    "summary": "Évolutions du schéma (pivots, clés étrangères, index, enums/slugs) et renommages pour clarifier le modèle.",
-    "tags": [
-      "migration",
-      "pivot",
-      "fk",
-      "index",
-      "enum",
-      "slug"
-    ],
-    "tech": [
-      "Migrations",
-      "Foreign Keys",
-      "Pivot Tables",
-      "Indexes",
-      "Enums/Slugs"
-    ],
-    "highlights": [
-      "Ajout/renommage de pivots, FKs et index",
-      "Introduction de slugs/enums pour la lisibilité",
-      "Scripts de migration idempotents"
-    ],
-    "examples": [
-      {
-        "key": "nan",
-        "summary": "nan",
-        "type": "nan",
-        "status": "nan",
-        "date": ""
-      }
-    ]
+    timeframe: { start: '2024-04', end: '2024-09' }
   }
 ];

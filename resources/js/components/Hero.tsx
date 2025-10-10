@@ -22,10 +22,11 @@ const TECHNICAL_SKILLS = [
 ] as const;
 
 const SOFT_SKILLS = [
-    'Leadership tech',
+    'Leadership',
     'Communication',
     'Pragmatisme',
-    'Esprit critique'
+    'Esprit critique',
+    'Ecoute active'
 ] as const;
 
 // Styles extraits
@@ -122,6 +123,7 @@ export default function Hero({ className }: Readonly<HeroProps>) {
                             variant="rounded"
                             sx={heroStyles.avatar}
                             aria-label="Avatar de Benjamin Boudry"
+                            src="/profil.jpg"
                         >
                             B
                         </Avatar>
@@ -145,7 +147,7 @@ export default function Hero({ className }: Readonly<HeroProps>) {
                         variant="h5"
                         sx={{ fontWeight: 800, lineHeight: 1.3 }}
                     >
-                        Je conçois des systèmes robustes, mesurables et maintenables — au service de la performance et de l'équipe.
+                        Systèmes robustes, mesurables et maintenables — au service de la performance et de l'équipe.
                     </Typography>
                     <Typography color="text.secondary">
                         Focus : architectures pragmatiques, pipelines CI/CD rationnalisés, performances et UX dev-friendly.

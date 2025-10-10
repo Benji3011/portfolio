@@ -1,37 +1,71 @@
 import * as React from 'react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { Link } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
 import {
-    Container,
-    Typography,
-    Stack,
-    TextField,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Button,
-    Chip,
+    Container, Typography, Stack, TextField, FormControl,
+    InputLabel, Select, MenuItem, Button, Chip,
 } from '@mui/material';
-import { projects as ALL_PROJECTS, type Project } from '@/data/projects';
 import ProjectCard from '@/components/ProjectCard';
+import { projects as RAW_PROJECTS, type Project } from '@/data/projects';
+import { sanitizeProject, allTags, allTech } from '@/lib/projects';
 
-type SortKey = 'title' | 'examples' | 'tags';
+type SortKey = 'examples' | 'title' | 'tags';
 
 const normalize = (s: string) =>
-    s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    s.normalize('NFKD').toLowerCase().replace(/\s+/g, ' ').trim();
 
-export default function Index() {
-    const [q, setQ] = useState('');
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [sortKey, setSortKey] = useState<SortKey>('examples');
+const getQuery = () => new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
 
-    const allTags = useMemo(() => {
-        const s = new Set<string>();
-        ALL_PROJECTS.forEach((p) => p.tags.forEach((t) => s.add(t)));
-        return Array.from(s).sort();
-    }, []);
+const useQueryState = <T extends string>(key: string, initial: T) => {
+    const params = getQuery();
+    const fromUrl = (params.get(key) as T) || initial;
+    const [val, setVal] = useState<T>(fromUrl);
+
+    useEffect(() => {
+        const p = getQuery();
+        if (val) p.set(key, String(val));
+        else p.delete(key);
+        const qs = p.toString();
+        window.history.replaceState({}, '', qs ? `?${qs}` : window.location.pathname);
+    }, [key, val]);
+
+    return [val, setVal] as const;
+};
+
+const useQueryMulti = (key: string) => {
+    const params = getQuery();
+    const fromUrl = params.getAll(key) // standards
+        .concat((params.get(key) || '').split(','))
+        .map((v) => v).filter(Boolean);
+    const [arr, setArr] = useState<string[]>(Array.from(new Set(fromUrl)));
+
+    useEffect(() => {
+        const p = getQuery();
+        p.delete(key);
+        if (arr.length === 1) p.set(key, arr[0]);
+        if (arr.length > 1) p.set(key, arr.join(','));
+        const qs = p.toString();
+        window.history.replaceState({}, '', qs ? `?${qs}` : window.location.pathname);
+    }, [key, arr]);
+
+    return [arr, setArr] as const;
+};
+
+export default function ProjectsIndex() {
+    const ALL_PROJECTS = useMemo<Project[]>(
+        () => RAW_PROJECTS.map(sanitizeProject),
+        []
+    );
+
+    // --- state (URL-sync) ---
+    const [q, setQ] = useQueryState<string>('q', '');
+    const [sortKey, setSortKey] = useQueryState<SortKey>('sort', 'examples');
+    const [selectedTags, setSelectedTags] = useQueryMulti('tags');
+    const [selectedTech, setSelectedTech] = useQueryMulti('tech');
+
+    const TAGS = useMemo(() => allTags(ALL_PROJECTS), [ALL_PROJECTS]);
+    const TECH = useMemo(() => allTech(ALL_PROJECTS), [ALL_PROJECTS]);
 
     const filtered = useMemo(() => {
         const query = normalize(q);
@@ -39,43 +73,35 @@ export default function Index() {
         const byQuery = (p: Project) => {
             if (!query) return true;
             const hay = [
-                p.title,
-                p.summary,
-                p.tags.join(' '),
-                p.tech.join(' '),
-                p.highlights.join(' '),
-            ]
-                .map(normalize)
-                .join(' ');
+                p.title, p.summary,
+                (p.tags || []).join(' '),
+                (p.tech || []).join(' '),
+                (p.highlights || []).join(' '),
+            ].map(normalize).join(' ');
             return hay.includes(query);
         };
 
         const byTags = (p: Project) =>
-            selectedTags.length === 0 ||
-            selectedTags.every((tag) => p.tags.includes(tag));
+            selectedTags.length === 0 || selectedTags.every((t) => p.tags.includes(t));
 
-        const arr = ALL_PROJECTS.filter((p) => byQuery(p) && byTags(p));
+        const byTech = (p: Project) =>
+            selectedTech.length === 0 || selectedTech.every((t) => p.tech.includes(t));
 
-        arr.sort((a, b) => {
-            if (sortKey === 'title') return a.title.localeCompare(b.title);
-            if (sortKey === 'tags') return b.tags.length - a.tags.length;
-            return (b.examples?.length ?? 0) - (a.examples?.length ?? 0);
-        });
+        const arr = ALL_PROJECTS.filter((p) => byQuery(p) && byTags(p) && byTech(p));
 
-        return arr;
-    }, [q, selectedTags, sortKey]);
+        switch (sortKey) {
+            case 'title':
+                return arr.sort((a, b) => a.title.localeCompare(b.title));
+            case 'tags':
+                return arr.sort((a, b) => (b.tags?.length ?? 0) - (a.tags?.length ?? 0));
+            case 'examples':
+            default:
+                return arr.sort((a, b) => (b.examples?.length ?? 0) - (a.examples?.length ?? 0));
+        }
+    }, [ALL_PROJECTS, q, selectedTags, selectedTech, sortKey]);
 
-    const toggleTag = (tag: string) => {
-        setSelectedTags((prev) =>
-            prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-        );
-    };
-
-    const clearFilters = () => {
-        setSelectedTags([]);
-        setQ('');
-        setSortKey('examples');
-    };
+    const toggle = (list: string[], set: (v: string[]) => void, item: string) =>
+        set(list.includes(item) ? list.filter((x) => x !== item) : [...list, item]);
 
     return (
         <Container maxWidth="lg">
@@ -96,6 +122,7 @@ export default function Index() {
                     fullWidth
                     inputProps={{ 'aria-label': 'Rechercher' }}
                 />
+
                 <FormControl sx={{ minWidth: 180 }}>
                     <InputLabel id="sort-label">Trier par</InputLabel>
                     <Select
@@ -109,31 +136,45 @@ export default function Index() {
                         <MenuItem value="tags">+ de tags</MenuItem>
                     </Select>
                 </FormControl>
-                {(q || selectedTags.length > 0) && (
-                    <Button onClick={clearFilters}>Réinitialiser</Button>
-                )}
             </Stack>
 
-            {/* Tag filters */}
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap mb={3}>
-                {allTags.map((tag) => {
-                    const active = selectedTags.includes(tag);
-                    return (
+            {/* Filtres tags */}
+            <Stack spacing={1} mb={2}>
+                <Typography variant="overline">Tags</Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    {TAGS.map((t) => (
                         <Chip
-                            key={tag}
-                            label={`#${tag}`}
-                            clickable
-                            color={active ? 'primary' : 'default'}
-                            variant={active ? 'filled' : 'outlined'}
-                            onClick={() => toggleTag(tag)}
-                            aria-pressed={active}
-                            aria-label={`Filtrer par ${tag}`}
+                            key={t}
+                            label={`#${t}`}
+                            size="small"
+                            variant={selectedTags.includes(t) ? 'filled' : 'outlined'}
+                            color={selectedTags.includes(t) ? 'primary' : 'default'}
+                            onClick={() => toggle(selectedTags, setSelectedTags, t)}
+                            aria-pressed={selectedTags.includes(t)}
                         />
-                    );
-                })}
+                    ))}
+                </Stack>
             </Stack>
 
-            {/* Grille responsive (size) : 1 / 2 / 3 colonnes */}
+            {/* Filtres tech */}
+            <Stack spacing={1} mb={3}>
+                <Typography variant="overline">Technos</Typography>
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                    {TECH.map((t) => (
+                        <Chip
+                            key={t}
+                            label={t}
+                            size="small"
+                            variant={selectedTech.includes(t) ? 'filled' : 'outlined'}
+                            color={selectedTech.includes(t) ? 'primary' : 'default'}
+                            onClick={() => toggle(selectedTech, setSelectedTech, t)}
+                            aria-pressed={selectedTech.includes(t)}
+                        />
+                    ))}
+                </Stack>
+            </Stack>
+
+            {/* Grille responsive */}
             <Grid container spacing={2}>
                 {filtered.map((p) => (
                     <Grid key={p.slug} size={{ xs: 12, sm: 6, md: 4 }}>
@@ -145,7 +186,7 @@ export default function Index() {
             {filtered.length === 0 && (
                 <Stack alignItems="center" justifyContent="center" py={8}>
                     <Typography color="text.secondary">
-                        Aucun résultat. Modifie la recherche ou les tags.
+                        Aucun résultat. Modifie la recherche ou les tags/technos.
                     </Typography>
                 </Stack>
             )}

@@ -30,8 +30,8 @@ export default function Presentation() {
                     Développeur Full-Stack
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                    Je conçois et livre des fonctionnalités utiles pour des produits internes :
-                    CRM, facturation PDF, intégrations SaaS, sécurité & qualité logicielle.
+                    Je conçois et livre des fonctionnalités en internes :
+                    CRM, facturation PDF, intégrations outils tiers, sécurité & qualité logicielle.
                 </Typography>
                 <Stack direction="row" spacing={1} justifyContent={{ md: 'center' }} flexWrap="wrap" useFlexGap>
                     {['Laravel', 'React', 'MUI', 'PHP', 'MySQL', 'CI/CD', 'Docker'].map((t) => (
@@ -40,142 +40,86 @@ export default function Presentation() {
                 </Stack>
             </Stack>
 
-            {/* CE QUE JE FAIS / VALEUR AJOUTÉE */}
             <Grid container spacing={2}>
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Ce que je fais
+                            <Typography variant="h5" gutterBottom textAlign={"center"}>
+                                Qui je suis
                             </Typography>
                             <Divider sx={{ mb: 1.5 }} />
-                            <Stack component="ul" spacing={0.75} pl={2}>
-                                <li>
-                                    <Typography variant="body2">
-                                        <strong>Applications internes</strong> orientées métier (CRM, back-office, outils Ops).
-                                    </Typography>
-                                </li>
-                                <li>
-                                    <Typography variant="body2">
-                                        <strong>Génération documentaire</strong> (devis, factures, PDF) et workflows associés.
-                                    </Typography>
-                                </li>
-                                <li>
-                                    <Typography variant="body2">
-                                        <strong>Intégrations</strong> (Ex. HubSpot / APIs tierces) et synchronisations de données.
-                                    </Typography>
-                                </li>
-                                <li>
-                                    <Typography variant="body2">
-                                        <strong>Qualité & delivery</strong> : CI/CD (GitLab/Jenkins), revues, tests, monitoring léger.
-                                    </Typography>
-                                </li>
-                                <li>
-                                    <Typography variant="body2">
-                                        <strong>Sécurité & permissions</strong> : contrôle d’accès, validation, conformité.
-                                    </Typography>
-                                </li>
-                            </Stack>
+                            <Typography variant="body2">
+                                Ingénieur R&D en alternance chez Eurécia et étudiant en Master EIL,
+                                j’aime rendre les systèmes <strong>simples, efficaces et fiables</strong>.<br/>
+                                Mon terrain de jeu : <strong>Laravel/React, intégrations API d'outils tiers</strong> (HubSpot, Smartsheet…),
+                                modélisation métier, et automatisations qui allègent le quotidien des équipes.
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Comment je travaille
+                            <Typography variant="h5" gutterBottom textAlign={"center"}>
+                                Mes valeurs
                             </Typography>
                             <Divider sx={{ mb: 1.5 }} />
-                            <Stack component="ul" spacing={0.75} pl={2}>
-                                <li>
+                            <Stack direction="row" spacing={1} justifyContent={{ md: 'center' }} flexWrap="wrap" useFlexGap>
+                                <Grid size={{ xs: 12, md: 3 }} textAlign={"center"}>
                                     <Typography variant="body2">
-                                        <strong>Clarté</strong> : cadrage rapide, specs concises, prototypes si besoin.
+                                        <strong>Fiabilité</strong>
                                     </Typography>
-                                </li>
-                                <li>
                                     <Typography variant="body2">
-                                        <strong>Itératif</strong> : petits incréments en prod, feedbacks fréquents.
+                                        Inspirer confiance à son équipe, permettre à chacun d’avancer sereinement.
+                                        Créer des fondations solides pour que les autres puissent s’appuyer dessus sans crainte.
                                     </Typography>
-                                </li>
-                                <li>
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 3 }} textAlign={"center"}>
                                     <Typography variant="body2">
-                                        <strong>Lisibilité</strong> : composants MUI cohérents, design système simple.
+                                        <strong>Traçabilité</strong>
                                     </Typography>
-                                </li>
-                                <li>
                                     <Typography variant="body2">
-                                        <strong>Responsable</strong> : métriques de base (erreurs, temps de réponse), dettes gérées.
+                                        Documenter et transmettre une décision, une anomalie ou une évolution technique,
+                                        donner du sens à ce qui a été fait.
                                     </Typography>
-                                </li>
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 3 }} textAlign={"center"}>
+                                    <Typography variant="body2">
+                                        <strong>Qualité</strong>
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Pas une option, une habitude.
+                                        C'est la clarté du code, les revues croisées et les tests automatisés, au service de la pérennité.
+                                        Un code propre, c’est un savoir partagé : il se lit, se comprend et se fait aimer par ceux qui le reprennent.
+                                    </Typography>
+                                </Grid>
+                                <Grid size={{ xs: 12, md: 3 }} textAlign={"center"}>
+                                    <Typography variant="body2">
+                                        <strong>Transversalité</strong>
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        C’est savoir connecter les métiers, les outils et les idées.
+                                        C'est comprendre les enjeux et trouver ensemble des solutions.
+                                        C'est cultiver les ponts plutôt que les murs, pour qu’un nouveau collaborateur trouve naturellement sa place dans un écosystème fluide et cohérent.
+                                    </Typography>
+                                </Grid>
                             </Stack>
                         </CardContent>
                     </Card>
                 </Grid>
             </Grid>
 
-            {/* STACK PRINCIPALE */}
             <Grid container spacing={2} mt={2}>
                 <Grid size={{ xs: 12, md: 4 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Stack principale
-                            </Typography>
+                            <Typography variant="h6" mb={1} textAlign={"center"} >Projet professionnel & personnel</Typography>
                             <Divider sx={{ mb: 1.5 }} />
-                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                {[
-                                    'Laravel', 'PHP 8', 'MySQL',
-                                    'React', 'TypeScript', 'MUI', 'Inertia',
-                                    'Blade', 'Eloquent', 'REST',
-                                    'GitLab', 'Jenkins', 'Docker (dev)',
-                                ].map((t) => (
-                                    <Chip key={t} label={t} size="small" />
-                                ))}
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                    <Card variant="outlined" sx={{ height: '100%' }}>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Domaines couverts
-                            </Typography>
-                            <Divider sx={{ mb: 1.5 }} />
-                            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                {[
-                                    'CRM interne', 'Facturation & PDF', 'Intégrations SaaS',
-                                    'UX applicative', 'Sécurité & permissions', 'CI/CD',
-                                    'Modélisation de données', 'Jobs/Observers', 'Monitoring léger',
-                                ].map((t) => (
-                                    <Chip key={t} label={t} size="small" />
-                                ))}
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                    <Card variant="outlined" sx={{ height: '100%' }}>
-                        <CardContent>
-                            <Typography variant="h5">Mes valeurs</Typography>
-                            <Stack component="ul" spacing={0.75} pl={2}>
-                                <li><Typography variant="body2"><strong>Responsabilité</strong> : code maintenable, dette maîtrisée, sécurité en priorité.</Typography></li>
-                                <li><Typography variant="body2"><strong>Clarté</strong> : specs courtes, démos fréquentes, docs utiles.</Typography></li>
-                                <li><Typography variant="body2"><strong>Orientation produit</strong> : valeur métier visible, simplification des usages.</Typography></li>
-                            </Stack>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid size={{ xs: 12, md: 4 }}>
-                    <Card variant="outlined" sx={{ height: '100%' }}>
-                        <CardContent>
-                            <Typography variant="h5">Mon projet professionnel & personnel</Typography>
                             <Typography variant="body2">
-                                Consolider mon rôle de développeur full-stack sur des produits internes (CRM, facturation, intégrations)
-                                et évoluer vers un <strong>lead technique</strong> axé qualité (CI/CD, sécurité) et accompagnement des usages.
+                                Consolider un profil d’ingénieur logiciel full-stack orienté produit :
+                                compréhension du besoin, qualité de conception, livraison incrémentale.
+                                À moyen terme, évoluer vers un rôle de tech lead sur un périmètre CRM/data.
                             </Typography>
                         </CardContent>
                     </Card>
@@ -183,28 +127,29 @@ export default function Presentation() {
                 <Grid size={{ xs: 12, md: 4 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
-                            <Typography variant="h5">Mes qualités humaines</Typography>
-                            <Stack component="ul" spacing={0.75} pl={2}>
-                                <li><Typography variant="body2"><strong>Pédagogie</strong> : vulgarisation, transferts et pair-programming.</Typography></li>
-                                <li><Typography variant="body2"><strong>Rigueur</strong> : process simple, revues systématiques, fiabilité.</Typography></li>
-                                <li><Typography variant="body2"><strong>Écoute</strong> : prises en compte des retours et itérations rapides.</Typography></li>
-                            </Stack>
+                            <Typography variant="h6" mb={1} textAlign={"center"} >Mes qualités humaines</Typography>
+                            <Divider sx={{ mb: 1.5 }} />
+                            <Typography variant="body2">
+                                Curieux, pédagogue, calme sous pression.
+                                A l'écoute, j’aime comprendre les besoins et les enjeux
+                                pour proposer des solutions adaptées.
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid size={{ xs: 12, md: 4 }}>
                     <Card variant="outlined" sx={{ height: '100%' }}>
                         <CardContent>
-                            <Typography variant="h5">Centres d’intérêt</Typography>
+                            <Typography variant="h6" mb={1} textAlign={"center"} >Centres d’intérêt</Typography>
+                            <Divider sx={{ mb: 1.5 }} />
                             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                {['SEO', 'Pilotage d’entreprise', 'Musique', 'Danse', 'Jeux vidéo'].map((i) => (
+                                {['Humain', 'Guitare / piano', 'Documentaire', 'Sciences et tecnhologies', 'Jeux vidéo'].map((i) => (
                                     <Chip key={i} label={i} size="small" />
                                 ))}
                             </Stack>
                         </CardContent>
                     </Card>
                 </Grid>
-
             </Grid>
 
 
