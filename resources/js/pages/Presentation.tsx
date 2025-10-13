@@ -118,7 +118,7 @@ export default function Presentation() {
                             <Divider sx={{ mb: 1.5 }} />
                             <Typography variant="body2">
                                 Consolider un profil d’ingénieur logiciel full-stack orienté produit :
-                                compréhension du besoin, qualité de conception, livraison incrémentale.
+                                compréhension du besoin métier, qualité de conception, livraison incrémentale.
                                 À moyen terme, évoluer vers un rôle de tech lead sur un périmètre CRM/data.
                             </Typography>
                         </CardContent>

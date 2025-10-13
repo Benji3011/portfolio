@@ -17,7 +17,7 @@ export type TimelineEvent = {
 };
 
 export const events: TimelineEvent[] = [
-  // Formations (gauche)
+  // ————— FORMATIONS (gauche)
   {
     sort: '2023-09',
     side: 'left',
@@ -54,39 +54,49 @@ export const events: TimelineEvent[] = [
     org: 'Lycée Les Catalins'
   },
 
-  // Expériences (droite)
+  // ————— EXPÉRIENCES (droite)
   {
     sort: '2023-04',
     side: 'right',
     period: 'Avr 2023 → Aujourd’hui',
     title: 'Alternant Ingénieur R&D',
     subtitle: 'Eurécia — Castanet-Tolosan (Toulouse)',
-    chips: ['Laravel', 'ITIL', 'iTop', 'CRM', 'CI/CD'],
+    chips: ['Laravel 10', 'CRM', 'API', 'PDF', 'SQL/Reporting'],
     org: 'Eurécia',
     orgUrl: 'https://www.eurecia.com/',
-    logo: '/eurecia.svg',
+    logo: '/images/logos/eurecia.svg',
     status: 'Alternant',
     responsibilities: [
-      'Chefferie de petits incréments : cadrage → livraison',
-      'Sécurité & bonnes pratiques (validation, droits)',
-      'Qualité : CI/CD, revues, docs courtes'
+      'Conception & refactor de modules critiques (architecture, qualité, tests)',
+      'Intégrations tierces (HubSpot, Smartsheet) : sécurité, idempotence, supervision',
+      'Pilotage par itérations : cadrage fonctionnel → livraison → documentation'
     ],
     missions: [
-      'Mise en place iTop (CMDB, ITSM) et intégrations',
-      'Dév. CRM interne (Laravel) : contacts, entreprises, docs PDF',
-      'Automatisations (jobs) & monitoring léger'
+      'Refonte moteur PDF (devis/commandes/factures) : factorisation Blade, mise en page compacte',
+      'Module CRM Contentieux : schéma de données, formulaire dynamique multi-phases, historisation',
+      'Intégrations APIs : sandbox HubSpot, webhooks Smartsheet, mappings fiabilisés',
+      'Offres packagées & Upsell : règles de compatibilité, UI vendeur (alertes/modales)',
+      'Tableau de bord des impayés : Eloquent multi-relations, regroupements par acteur'
     ],
     relatedProjects: [
-      'gestion-des-contacts-entreprises',
       'facturation-documents-pdf-devis-facture',
-      'modele-de-donnees-migrations'
+      'crm-contentieux',
+      'integration-hubspot',
+      'integration-smartsheet',
+      'offres-pack-upsell',
+      'tableau-suivi-impayes'
     ],
     relatedSkills: [
-      'gestion-de-projet-agile',
+      'architecture-backend-laravel',
       'integration-apis',
-      'generation-pdf-facturation',
-      'qualite-ci-cd',
-      'securite-permissions'
+      'data-modeling-sql',
+      'code-quality-maintainability',
+      'asynchronous-orchestration',
+      'gestion-projet-agile',
+      'communication-transverse',
+      'rigueur-fiabilite',
+      'autonomie-responsabilisation',
+      'analyse-problemes'
     ]
   },
   {
@@ -95,12 +105,12 @@ export const events: TimelineEvent[] = [
     period: 'Aoû 2021 → Oct 2022',
     title: 'Assistant Informatique',
     subtitle: 'Mission Locale Jeune Ariège — Foix',
-    chips: ['Support IT', 'HelpDesk'],
+    chips: ['Support IT', 'HelpDesk', 'Automatisation légère'],
     org: 'Mission Locale Jeune Ariège',
     status: 'CDD',
-    responsibilities: ['Support aux utilisateurs', 'Exploitation quotidienne'],
-    missions: ['Dépannage, suivi, petites automatisations'],
-    relatedSkills: ['communication-produit', 'documentation-transfert']
+    responsibilities: ['Support utilisateurs', 'Exploitation quotidienne', 'Résolution incidents'],
+    missions: ['Dépannage, suivi, petites automatisations de tâches récurrentes'],
+    relatedSkills: ['communication-transverse', 'rigueur-fiabilite', 'analyse-problemes']
   },
   {
     sort: '2020-01',
@@ -111,21 +121,21 @@ export const events: TimelineEvent[] = [
     chips: ['Symfony', 'React', 'Agile'],
     org: 'Indépendant',
     status: 'Auto-entrepreneur',
-    responsibilities: ['Cadrage client', 'Dév. & déploiement'],
-    missions: ['Sites vitrines, petits modules sur mesure'],
-    relatedSkills: ['ux-applicative', 'communication-produit']
+    responsibilities: ['Cadrage client', 'Développement & déploiement'],
+    missions: ['Sites vitrines, petits modules sur mesure, intégrations simples'],
+    relatedSkills: ['gestion-projet-agile', 'communication-transverse', 'analyse-problemes']
   },
   {
     sort: '2019-09',
     side: 'right',
     period: 'Sep 2019 → Jan 2020',
     title: 'Stagiaire Développeur Web',
-    subtitle: 'ECOLAND’s — Lavelanet',
+    subtitle: "ECOLAND's — Lavelanet",
     chips: ['PrestaShop', 'PHP', 'SQL'],
     org: "ECOLAND's",
     status: 'Stage',
     responsibilities: ['Dév. modules PrestaShop', 'Intégration API'],
-    missions: ['Webservices compta & stocks, CSV volumineux'],
-    relatedSkills: ['integration-apis', 'documentation-transfert']
+    missions: ['Webservices compta & stocks, imports CSV volumineux'],
+    relatedSkills: ['integration-apis', 'communication-transverse']
   }
 ];

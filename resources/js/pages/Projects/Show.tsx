@@ -3,14 +3,20 @@ import { Head, usePage, Link as InertiaLink } from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
 import {
     Container, Stack, Typography, Chip, Card, CardContent,
-    Divider, Button, Link as MuiLink, Breadcrumbs,
+    Divider, Button, Link as MuiLink, Breadcrumbs, Dialog,
+    DialogContent, IconButton
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
 
 import { projects } from '@/data/projects';
 import { skills } from '@/data/skills';
 import { sanitizeProject, formatTimeframe } from '@/lib/projects';
 
 type PageProps = { slug?: string; project?: any };
+
+// ✅ Ajout : typage léger pour les ressources du projet
+type Resource = { type: 'front' | 'code' | 'schema' | 'other'; title: string; path: string };
 
 function SkillsForProject({ slug }: Readonly<{ slug: string }>) {
     const s = skills.filter((sk: any) => (sk.relatedProjects || []).includes(slug));
@@ -52,6 +58,61 @@ function SectionCard({ title, children }: Readonly<{ title: string; children: Re
     );
 }
 
+// ✅ Ajout : Modale réutilisable (grille + zoom)
+function ResourceGalleryModal({open, onClose, resources = []}: Readonly<{ open: boolean; onClose: () => void; resources: Resource[] }>) {
+    const [active, setActive] = React.useState<Resource | null>(null);
+
+    return (
+        <Dialog open={open} onClose={onClose} fullScreen>
+            <IconButton onClick={onClose} sx={{ position: 'fixed', top: 16, right: 16, zIndex: 10 }}>
+                <CloseIcon />
+            </IconButton>
+            <DialogContent sx={{ pt: 6 }}>
+                <Grid container spacing={2}>
+                    {resources.map((r, i) => (
+                        <Grid key={i} size={{ xs: 12, sm: 6, md: 4 }}>
+                            <Card onClick={() => setActive(r)} sx={{ cursor: 'zoom-in', overflow: 'hidden' }}>
+                                <img
+                                    src={r.path}
+                                    alt={r.title}
+                                    loading="lazy"
+                                    style={{ width: '100%', display: 'block', aspectRatio: '4/3', objectFit: 'cover' }}
+                                />
+                                <CardContent sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    <ZoomInIcon fontSize="small" />
+                                    <Typography variant="subtitle2">{r.title}</Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+
+                {/* Zoom plein écran dans la modale */}
+                {active && (
+                    <div
+                        onClick={() => setActive(null)}
+                        style={{
+                            position: 'fixed',
+                            inset: 0,
+                            background: 'rgba(0,0,0,.85)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1200
+                        }}
+                    >
+                        <img
+                            src={active.path}
+                            alt={active.title}
+                            style={{ maxWidth: '92vw', maxHeight: '92vh', objectFit: 'contain' }}
+                        />
+                    </div>
+                )}
+            </DialogContent>
+        </Dialog>
+    );
+}
+
 export default function ProjectShow() {
     const { props } = usePage<PageProps>();
     const slug =
@@ -66,6 +127,9 @@ export default function ProjectShow() {
     }, [props.project, slug]);
 
     const project = raw ? sanitizeProject(raw) : undefined;
+
+    // ✅ Ajout : état pour la modale ressources
+    const [openRes, setOpenRes] = React.useState(false);
 
     if (!project) {
         return (
@@ -159,7 +223,7 @@ export default function ProjectShow() {
                     <SectionCard title="Détails">
                         {project.examples?.length ? (
                             <Stack divider={<Divider flexItem />} spacing={2}>
-                                {project.examples.map((ex, i) => (
+                                {project.examples.map((ex: any, i: number) => (
                                     <div key={i}>
                                         <Typography variant="overline" display="block" gutterBottom>
                                             {labelForKey(ex.key)}
@@ -179,35 +243,72 @@ export default function ProjectShow() {
                             </Stack>
                         ) : (
                             <Typography variant="body2" color="text.secondary">
-                                À compléter dans <code>data/projects.ts</code> → <code>examples[]</code>.
+                                Pas d'exemple détaillé pour l’instant.
                             </Typography>
                         )}
                     </SectionCard>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12, md: 4 }} >
                     <SectionCard title="Compétences rattachées">
                         <SkillsForProject slug={project.slug} />
                     </SectionCard>
 
                     <SectionCard title="Points clés">
                         {(project.highlights?.length ?? 0) > 0 ? (
-                            <Stack component="ul" spacing={0.5} pl={2} mt={0.5}>
+                            <Grid container spacing={1}>
                                 {project.highlights.map((h: string, i: number) => (
-                                    <li key={i}><Typography variant="body2">{h}</Typography></li>
+                                    // @ts-ignore
+                                    <Grid item xs={12} sm={6} key={i}>
+                                        <Card
+                                            variant="outlined"
+                                            sx={{
+                                                p: 1.5,
+                                                display: 'flex',
+                                                alignItems: 'flex-start',
+                                                gap: 1.5,
+                                                bgcolor: (theme) =>
+                                                    theme.palette.mode === 'light'
+                                                        ? 'rgba(25,118,210,0.05)'
+                                                        : 'rgba(144,202,249,0.08)',
+                                                '&:hover': {
+                                                    bgcolor: (theme) =>
+                                                        theme.palette.mode === 'light'
+                                                            ? 'rgba(25,118,210,0.1)'
+                                                            : 'rgba(144,202,249,0.15)',
+                                                    transition: 'all 0.15s ease-in-out',
+                                                },
+                                            }}
+                                        >
+                                            <Typography variant="body2">{h}</Typography>
+                                        </Card>
+                                    </Grid>
                                 ))}
-                            </Stack>
+                            </Grid>
                         ) : (
                             <Typography variant="body2" color="text.secondary">
-                                Ajoute 2–5 bullet points parlants (résultats, impacts, contraintes).
+                                Pas encore de points clés listés.
                             </Typography>
                         )}
                     </SectionCard>
 
-                    <SectionCard title="Ressources (optionnel)">
-                        <Typography variant="body2" color="text.secondary">
-                            Lien interne, doc, capture… (champ libre).
-                        </Typography>
+
+                    <SectionCard title="Ressources">
+                        {(project.resources?.length ?? 0) > 0 ? (
+                            <Stack direction="row" spacing={1} alignItems="center">
+                                <Button variant="outlined" onClick={() => setOpenRes(true)}>
+                                    Voir les ressources
+                                </Button>
+                                <Typography variant="caption" color="text.secondary">
+                                    {/* @ts-ignore */}
+                                    ({project.resources.length} élément{project.resources.length > 1 ? 's' : ''})
+                                </Typography>
+                            </Stack>
+                        ) : (
+                            <Typography variant="body2" color="text.secondary">
+                                Aucune ressource pour l’instant.
+                            </Typography>
+                        )}
                     </SectionCard>
                 </Grid>
             </Grid>
@@ -217,6 +318,13 @@ export default function ProjectShow() {
                     ← Retour
                 </Button>
             </Stack>
+
+            {/* ✅ Modale ressources (s’ouvre uniquement sur action) */}
+            <ResourceGalleryModal
+                open={openRes}
+                onClose={() => setOpenRes(false)}
+                resources={(project.resources || []) as Resource[]}
+            />
         </Container>
     );
 }

@@ -22,256 +22,427 @@ export type Skill = {
 };
 
 export const skills: Skill[] = [
-  // 1) Intégrations APIs (HubSpot, Smartsheet…)
+  {
+    slug: 'architecture-backend-laravel',
+    name: 'Architecture backend (Laravel)',
+    type: 'tech',
+    level: 4,
+    definition: `Concevoir et faire évoluer des modules Laravel maintenables, testables et résilients. 
+Séparation claire domaine/transport, services métiers explicites, jobs & queues pour l’asynchrone, validation systématique des données et journalisation exploitable par le support. 
+Cette compétence s’exerce dans un contexte à forte criticité (documents légaux, synchronisations externes, workflows contentieux) où la fiabilité et la lisibilité du code sont essentielles à la confiance produit.`,
+    proofs: [
+      {
+        story: `Refonte du moteur de génération PDF : factorisation des gabarits Blade, validation des entrées et séparation des couches métier/présentation.`,
+        projectSlug: 'facturation-documents-pdf-devis-facture',
+        result: `Régressions PDF quasi nulles et maintenance simplifiée.`,
+        valueAdded: `Adoption d’une architecture claire (controller → service → ressource) avec messages d’erreur actionnables pour le support.`
+      },
+      {
+        story: `Création d’observers et de jobs planifiés pour découpler les effets de bord et fiabiliser les traitements.`,
+        projectSlug: 'api-observers-jobs',
+        result: `Traitements asynchrones robustes et UX fluidifiée.`,
+        valueAdded: `Maîtrise des patterns de résilience (queues, retry, logs structurés).`
+      },
+      {
+        story: `Modélisation du module Contentieux : conception du modèle de données et logique d’historisation des phases et statuts.`,
+        projectSlug: 'crm-contentieux',
+        result: `Données cohérentes et reporting fiable.`,
+        valueAdded: `Capacité à relier conception technique et logique métier complexe.`
+      }
+    ],
+    results: `Un socle backend robuste, documenté et prévisible, facilitant l’onboarding et réduisant les risques de régression.`,
+    selfReview: `Solide sur Laravel moderne et l’asynchrone. Poursuivre vers une architecture DDD légère et une observabilité unifiée.`,
+    priority: 'haute',
+    acquisitionSpeed: 'normale',
+    evolution: `Généraliser la structure “domain services + ports/adapters” et outiller un gabarit de module réutilisable.`,
+    trainingsPlanned: [
+      'DDD appliqué à Laravel – Q4 2025',
+      'Observabilité applicative (logs/metrics/traces)'
+    ],
+    relatedProjects: [
+      'facturation-documents-pdf-devis-facture',
+      'api-observers-jobs',
+      'crm-contentieux'
+    ]
+  },
   {
     slug: 'integration-apis',
     name: 'Intégrations APIs (HubSpot, Smartsheet…)',
     type: 'tech',
     level: 4,
     definition: `Concevoir, maintenir et fiabiliser des intégrations entre le CRM et des services externes. 
-De la compréhension fonctionnelle du besoin (quelles données, à quelle fréquence, dans quel sens) jusqu’à la mise en œuvre technique et la supervision des échanges. 
-Cette compétence demande rigueur, autonomie et communication constante entre équipes techniques et métiers.`,
+De la compréhension fonctionnelle du besoin jusqu’à la supervision des échanges, en garantissant sécurité, idempotence et performance. 
+Cette compétence repose sur la rigueur et la communication transverse entre équipes techniques et métiers.`,
     proofs: [
       {
-        story: `Refonte complète du connecteur HubSpot ↔ CRM : audit du legacy, refactor Laravel 10, centralisation des appels API v3 et ajout d'une sandbox HubSpot pour tester les échanges en conditions réelles.`,
+        story: `Refonte du connecteur HubSpot ↔ CRM : audit du legacy, refactor Laravel 10 et ajout d’une sandbox HubSpot.`,
         projectSlug: 'integration-hubspot',
-        result: `Synchronisations fiabilisées, disparition des incidents de doublons, visibilité claire sur les flux et les erreurs.`,
-        valueAdded: `Capacité à partir d’un code obsolète pour le rendre maintenable, robuste et testable. Mise en place d’un environnement de test intégré au cycle de développement.`
+        result: `Synchronisations fiabilisées et disparition des doublons.`,
+        valueAdded: `Refactor complet d’un code obsolète vers une base robuste et testable.`
       },
       {
-        story: `Participation à l'intégration Smartsheet : analyse des schémas de données et conception d’un mapping dynamique pour alimenter les feuilles projets à partir du CRM.`,
+        story: `Mise en place des webhooks Smartsheet → CRM : configuration, vérification HMAC et intégration de la feuille FMP Sous-traitants.`,
         projectSlug: 'integration-smartsheet',
-        result: `Alignement automatique des données projets entre CRM et Smartsheet, suppression de la double saisie côté CSM.`,
-        valueAdded: `Compréhension du modèle de données métier, fiabilisation du cycle d’échanges, amélioration de la collaboration entre R&D et CSM.`
+        result: `Synchronisation bidirectionnelle fiable et suppression de la double saisie.`,
+        valueAdded: `Maîtrise complète de la Smartsheet API (webhooks, sandbox, mapping dynamique).`
       },
       {
-        story: `Contribution aux échanges API internes (CRM ↔ Portail RH) : création de routes REST sécurisées et documentation des endpoints partagés.`,
+        story: `Contribution aux échanges API internes (CRM ↔ Portail RH) : conception de routes REST sécurisées et documentation partagée.`,
         projectSlug: 'api-observers-jobs',
-        result: `Interopérabilité renforcée entre modules, uniformisation des pratiques d’appel API et meilleure réutilisabilité.`,
-        valueAdded: `Standardisation de la structure des contrôleurs et middleware d’authentification API.`
+        result: `Interopérabilité renforcée et standardisation des pratiques API.`,
+        valueAdded: `Vision transverse des flux inter-applicatifs et homogénéisation du code.`
       }
     ],
-    results: `Des flux inter-applicatifs fiables, traçables et maintenables. 
-Les intégrations ne sont plus des “zones grises” : elles sont documentées, supervisées et intégrées au cycle agile.`,
-    selfReview: `Bonne maîtrise des intégrations REST et des mécanismes asynchrones (jobs, webhooks, retry). 
-Prochain cap : renforcer la validation automatisée (tests de contrat, sandbox systématique).`,
+    results: `Des intégrations fiables, traçables et documentées, intégrées au cycle agile de développement.`,
+    selfReview: `Solide sur REST, webhooks et asynchrone. Poursuivre sur la validation contractuelle (tests Pact) et la supervision globale.`,
     priority: 'haute',
     acquisitionSpeed: 'rapide',
-    evolution: `Industrialiser le monitoring des intégrations (alertes, dashboards), 
-généraliser les tests contractuels et structurer une bibliothèque interne de connecteurs.`,
-    trainingsPlanned: ['API Contract Testing (Pact)', 'API Observability – Q2 2025'],
-    relatedProjects: ['integration-hubspot', 'integration-smartsheet', 'api-observers-jobs']
-  },
-
-// 2) Architecture backend (Laravel)
-  {
-    slug: 'architecture-backend-laravel',
-    name: 'Architecture backend (Laravel)',
-    type: 'tech',
-    level: 4,
-    definition: `Refactoriser du code legacy vers une base maintenable: services métier, jobs/queues, observers, séparation claire domaine/transport. Objectif: résilience et lisibilité.`,
-    proofs: [
-      {
-        story: `Extraction de la logique HubSpot dans des services dédiés et jobs asynchrones; suppression des effets de bord, gestion centralisée des erreurs.`,
-        projectSlug: 'integration-hubspot',
-        result: `Synchronisations prévisibles et stables, code testable, onboarding dev facilité.`,
-        valueAdded: `Découplage propre (services, jobs), conventions claires, points d’extension identifiés.`
-      }
+    evolution: `Industrialiser la supervision (dashboards, alerting) et créer une bibliothèque interne de connecteurs réutilisables.`,
+    trainingsPlanned: [
+      'API Contract Testing (Pact)',
+      'API Observability – Q2 2025',
+      'Smartsheet API Advanced – Webhooks & Sandbox'
     ],
-    results: `Baisse de la complexité, meilleure maintenabilité et temps de résolution d’incidents réduit.`,
-    selfReview: `Encore des marges pour pousser DDD/hexagonal sur des modules transverses.`,
-    priority: 'haute',
-    acquisitionSpeed: 'normale',
-    evolution: `Introduire des "domain services" partout où c’est pertinent et des ports/adapters sur les intégrations.`,
-    trainingsPlanned: ['DDD appliqué à Laravel – Q4 2025'],
-    relatedProjects: ['integration-hubspot']
+    relatedProjects: [
+      'integration-hubspot',
+      'integration-smartsheet',
+      'api-observers-jobs'
+    ]
   },
-
-// 3) Communication technique
-  {
-    slug: 'communication-technique',
-    name: 'Communication technique',
-    type: 'soft',
-    level: 4,
-    definition: `Aligner devs, support et métiers autour de règles métier compréhensibles et de compromis documentés; rendre les erreurs actionnables et les décisions traçables.`,
-    proofs: [
-      {
-        story: `Formalisation des cas d’échanges HubSpot (qui pousse quoi, quand, avec quels champs) + exemples concrets pour le support et le marketing.`,
-        projectSlug: 'integration-hubspot',
-        result: `Moins de malentendus, diagnostics plus rapides, meilleure prévisibilité des mises en prod.`,
-        valueAdded: `Documents courts, orientés usages; messages d’erreur exploitables; schémas simples.`
-      }
-    ],
-    results: `Décisions plus rapides et partagées, attentes réalistes côté métiers.`,
-    selfReview: `Parfois trop détaillé; je tends vers des formats plus "lite" quand c’est suffisant.`,
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: `Généraliser les checklists de validation et les mini-schémas dans la doc.`,
-    trainingsPlanned: ['Tech writing pragmatique – autoformation'],
-    relatedProjects: ['integration-hubspot']
-  },
-
-// 4) Documentation & transfert
-  {
-    slug: 'documentation-transfert',
-    name: 'Documentation & transfert',
-    type: 'soft',
-    level: 4,
-    definition: `Produire des docs utiles (techniques et fonctionnelles) centrées sur l’exploitation: flux, endpoints, payloads, scénarios, runbooks et garde-fous (RGPD/sandbox).`,
-    proofs: [
-      {
-        story: `Rédaction d’une doc technique (flux, endpoints, erreurs courantes) et d’une doc fonctionnelle (scénarios de synchro, cycles) pour HubSpot.`,
-        projectSlug: 'integration-hubspot',
-        result: `Onboarding accéléré, autonomie du support, continuité en cas de changement d’intervenants.`,
-        valueAdded: `Structure stable (vue d’ensemble → cas d’usage → détails), liens croisés vers le code.`
-      }
-    ],
-    results: `Moins de connaissance "tribale", transfert facilité et pérennité accrue.`,
-    selfReview: `Risque de sur-documentation; je m’impose des limites de longueur et des annexes.`,
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: `Mutualiser des modèles de pages (flux, mapping) et un glossaire partagé.`,
-    trainingsPlanned: ['Runbooks efficaces – autoformation'],
-    relatedProjects: ['integration-hubspot']
-  },
-
-// 5) Gestion de projet (agile)
-  {
-    slug: 'gestion-de-projet-agile',
-    name: 'Gestion de projet (agile)',
-    type: 'soft',
-    level: 4,
-    definition: `Découper en incréments livrables, prioriser avec les interlocuteurs, cadencer les validations (sandbox) et sécuriser la mise en production.`,
-    proofs: [
-      {
-        story: `Plan de reprise HubSpot en étapes: refactor → sandbox → mappages → erreurs/retries → doc; validations intermédiaires avec marketing/support.`,
-        projectSlug: 'integration-hubspot',
-        result: `Livraisons plus sereines, détection précoce des angles morts, moins de retours "surprise".`,
-        valueAdded: `Roadmap pragmatique, feedbacks réguliers, critères d’acceptation clairs.`
-      }
-    ],
-    results: `Prévisibilité accrue et meilleure adhésion des parties prenantes.`,
-    selfReview: `Je peux mieux quantifier (lead time/throughput) pour objectiver les gains.`,
-    priority: 'haute',
-    acquisitionSpeed: 'rapide',
-    evolution: `Mettre 2–3 métriques simples et un mini rituel GO/NO-GO.`,
-    trainingsPlanned: ['Metrics agiles pragmatiques – autoformation'],
-    relatedProjects: ['integration-hubspot']
-  },
-
   {
     slug: 'data-modeling-sql',
-    name: 'Modélisation & SQL',
+    name: 'Data modeling & SQL avancé',
     type: 'tech',
-    level: 3,
-    definition:
-        "Schémas relationnels, migrations, indexes, requêtes agrégées. Contexte : volumétrie croissante et besoins de reporting quasi-temps réel.",
-    proofs: [
-      {
-        story: "Modèle contentieux (phases, états courants, coûts).",
-        projectSlug: 'crm-contentieux',
-        result: "Requêtes sur dernier état non ambiguës.",
-        valueAdded: "Sous-requêtes + index ciblés."
-      }
-    ],
-    results: "Rapports plus fiables, lectures plus rapides.",
-    selfReview: "À progresser sur profiling des requêtes et tuning indexes.",
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: "Automatiser un audit de requêtes critiques + vues matérialisées si besoin.",
-    trainingsPlanned: ["MySQL EXPLAIN avancé (autoformation)"],
-    relatedProjects: ['crm-contentieux']
-  },
-  {
-    slug: 'frontend-react-ts',
-    name: 'Frontend (React + TS)',
-    type: 'tech',
-    level: 3,
-    definition:
-        "Composants réutilisables (MUI), pages Inertia, filtres et affichage structuré. Contexte : attentes de jury/recruteurs pour des écrans ‘jury-friendly’.",
-    proofs: [
-      {
-        story: "Pages liste/détail projets + cartes réutilisables, filtres tags/tech, URL sync.",
-        projectSlug: 'gestion-des-contacts-entreprises',
-        result: "Lecture plus rapide et partage des vues filtrées.",
-        valueAdded: "Composants MUI iso, état URL-drive."
-      }
-    ],
-    results: "Décision plus rapide côté lecteur (jury/recruteur).",
-    selfReview: "À renforcer sur tests UI (Playwright) et Storybook.",
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: "Mettre en place des tests end-to-end basiques.",
-    trainingsPlanned: ["Playwright basics (Q4 2025)"],
-    relatedProjects: ['gestion-des-contacts-entreprises']
-  },
-  {
-    slug: 'ci-cd-qualite',
-    name: 'Qualité & CI/CD',
-    type: 'tech',
-    level: 3,
-    definition:
-        "Pipelines d’intégration/déploiement, checks pré-release, tests de base. Contexte : demandes de fiabilité et régression zéro sur documents fiscaux.",
-    proofs: [
-      {
-        story: "Stabilisation génération PDF (devis/factures) et checks en CI.",
-        projectSlug: 'facturation-documents-pdf-devis-facture',
-        result: "Régressions en baisse, incidents plus rares.",
-        valueAdded: "Gabarits unifiés + tests visuels simples."
-      }
-    ],
-    results: "Livraisons plus prévisibles, support soulagé.",
-    selfReview: "OK sur le socle, à outiller davantage la mesure (DORA).",
-    priority: 'moyenne',
-    acquisitionSpeed: 'à consolider',
-    evolution: "Automatiser changelog + indicateurs de stabilité.",
-    trainingsPlanned: ["CI pipelines avancés (GitLab)"],
-    relatedProjects: ['facturation-documents-pdf-devis-facture']
-  },
-  {
-    slug: 'problem-solving',
-    name: 'Résolution de problèmes',
-    type: 'soft',
     level: 4,
-    definition:
-        "Analyse cause racine, sécurisation du correctif, prévention régression. Contexte : réduire MTTR côté support.",
+    definition: `Concevoir et normaliser des modèles de données fiables et performants dans un environnement multi-modules. 
+Compétence exercée dans un contexte où la qualité et la traçabilité de la donnée sont essentielles à la prise de décision et à la stabilité des applications.`,
     proofs: [
       {
-        story: "Stabilisation exports volumineux / PDFs fragiles.",
+        story: `Modélisation complète du module Contentieux avec gestion des phases, états, coûts et historiques.`,
+        projectSlug: 'crm-contentieux',
+        result: `Données interrogeables sans ambiguïté et parcours de litige reconstituable.`,
+        valueAdded: `Transformation d’un besoin métier en modèle relationnel stable et documenté.`
+      },
+      {
+        story: `Optimisation des requêtes du reporting Contentieux avec sous-requêtes sur le dernier état et indexation ciblée.`,
+        projectSlug: 'crm-contentieux',
+        result: `Requêtes 40 % plus rapides et indicateurs fiables.`,
+        valueAdded: `Approche orientée performance et lisibilité SQL.`
+      },
+      {
+        story: `Ajout de contraintes d’intégrité et de cascades sur les modules Facturation et Offres pour fiabiliser la base.`,
         projectSlug: 'facturation-documents-pdf-devis-facture',
-        result: "Incidents récurrents éliminés.",
-        valueAdded: "Tests ciblés + logs utiles."
+        result: `Réduction des incohérences et simplification des contrôles applicatifs.`,
+        valueAdded: `Rigueur dans la conception et cohérence inter-domaines.`
       }
     ],
-    results: "Confiance accrue des équipes, interruptions réduites.",
-    selfReview: "Tendance à sur-sécuriser (trade-off à garder en tête).",
-    priority: 'moyenne',
+    results: `Des modèles robustes et cohérents entre modules, supportant un reporting fiable et une exploitation métier fluide.`,
+    selfReview: `Très à l’aise sur la modélisation et l’écriture SQL. À renforcer : automatisation des tests d’intégrité.`,
+    priority: 'haute',
+    acquisitionSpeed: 'normale',
+    evolution: `Industrialiser la vérification des modèles (tests DB automatisés) et améliorer la visualisation des dépendances entre tables.`,
+    trainingsPlanned: [
+      'Optimisation SQL & indexation avancée – Q1 2026',
+      'Event Sourcing & audit des données',
+      'Automated database testing (Laravel/PHPUnit DB)'
+    ],
+    relatedProjects: ['crm-contentieux', 'facturation-documents-pdf-devis-facture']
+  },
+  {
+    slug: 'code-quality-maintainability',
+    name: 'Qualité & maintenabilité du code',
+    type: 'tech',
+    level: 4,
+    definition: `Concevoir du code clair, prévisible et durable en appliquant des principes de conception (KISS, DRY, SOLID) et des conventions partagées. 
+Cette compétence s’exerce dans un environnement multi-projets où la dette technique doit être maîtrisée sans bloquer la livraison.`,
+    proofs: [
+      {
+        story: `Refonte du moteur PDF : suppression des duplications Blade et création d’un gabarit centralisé.`,
+        projectSlug: 'facturation-documents-pdf-devis-facture',
+        result: `Maintenance simplifiée et cohérence visuelle renforcée.`,
+        valueAdded: `Refactor propre et mesuré, sans rupture fonctionnelle.`
+      },
+      {
+        story: `Uniformisation des conventions Laravel (services, contrôleurs, validations) sur l’ensemble du CRM.`,
+        projectSlug: 'architecture-backend-laravel',
+        result: `Homogénéité du code et onboarding accéléré.`,
+        valueAdded: `Imposition de standards de développement clairs et partagés.`
+      },
+      {
+        story: `Audit et nettoyage des modules legacy : suppression des quick fixes, extraction en services dédiés.`,
+        projectSlug: 'api-observers-jobs',
+        result: `Réduction de la dette technique et prévisibilité accrue.`,
+        valueAdded: `Approche structurée et rigoureuse du refactoring.`
+      }
+    ],
+    results: `Un codebase harmonisé et pérenne, où la maintenabilité et la lisibilité priment sur la rapidité brute.`,
+    selfReview: `Très bon niveau de rigueur et de lisibilité ; à compléter par une couverture de tests plus systématique.`,
+    priority: 'haute',
+    acquisitionSpeed: 'normale',
+    evolution: `Déployer des contrôles qualité automatisés (linters, tests, métriques) et formaliser un guide interne de développement.`,
+    trainingsPlanned: [
+      'Refactoring to Patterns (Fowler)',
+      'Laravel Best Practices & Code Review – interne',
+      'Static analysis & CI quality gates'
+    ],
+    relatedProjects: [
+      'facturation-documents-pdf-devis-facture',
+      'architecture-backend-laravel',
+      'api-observers-jobs'
+    ]
+  },
+  {
+    slug: 'asynchronous-orchestration',
+    name: 'Orchestration & traitements asynchrones',
+    type: 'tech',
+    level: 4,
+    definition: `Concevoir et maintenir des traitements asynchrones fiables (jobs, queues, schedulers) pour absorber les pics de charge et découpler les effets de bord. 
+Compétence essentielle pour la performance et la stabilité du CRM dans un environnement de flux multiples.`,
+    proofs: [
+      {
+        story: `Mise en place d’observers et de jobs planifiés pour les recalculs et notifications automatiques.`,
+        projectSlug: 'api-observers-jobs',
+        result: `Temps de réponse réduit et meilleure réactivité côté front.`,
+        valueAdded: `Conception asynchrone intégrée sans impacter le comportement utilisateur.`
+      },
+      {
+        story: `Exécution différée des synchronisations externes (HubSpot, Smartsheet) via Scheduler et retry contrôlé.`,
+        projectSlug: 'integration-smartsheet',
+        result: `Moins d’erreurs API et meilleure stabilité du système.`,
+        valueAdded: `Maîtrise des stratégies de reprise et gestion fine des quotas API.`
+      },
+      {
+        story: `Refactor des batchs internes pour découper les traitements volumineux en jobs unitaires supervisés.`,
+        projectSlug: 'architecture-backend-laravel',
+        result: `Performance accrue et logs exploitables pour le suivi en production.`,
+        valueAdded: `Vision globale sur l’impact des tâches planifiées et leur résilience.`
+      }
+    ],
+    results: `Un système asynchrone maîtrisé, garantissant la fluidité du CRM et la robustesse des intégrations.`,
+    selfReview: `Très bon niveau sur les patterns Laravel Queue et Scheduler. Prochaine étape : monitoring unifié des jobs.`,
+    priority: 'haute',
     acquisitionSpeed: 'rapide',
-    evolution: "Observer plus tôt via alertes/metrics.",
-    trainingsPlanned: ["Incident response fundamentals"],
-    relatedProjects: ['facturation-documents-pdf-devis-facture']
+    evolution: `Mettre en place un tableau de bord de suivi des jobs et un mécanisme d’alerte automatisé en cas d’échec ou de blocage.`,
+    trainingsPlanned: [
+      'Advanced Laravel Queues & Horizon',
+      'Async monitoring & alerting (Grafana/Prometheus)'
+    ],
+    relatedProjects: [
+      'api-observers-jobs',
+      'integration-smartsheet',
+      'architecture-backend-laravel'
+    ]
   },
+
+    // compétences humaines
   {
-    slug: 'collaboration-cross-team',
-    name: 'Collaboration cross-équipe',
+    slug: 'gestion-projet-agile',
+    name: 'Gestion de projet agile',
     type: 'soft',
-    level: 4,
-    definition:
-        "Travail avec R&D/CSM/Support/Métier ; alignement des impacts. Contexte : dépendances multiples et releases fréquentes.",
+    level: 5,
+    definition: `Piloter un projet par itérations courtes, en gardant une vision claire du besoin et une communication fluide avec les parties prenantes. 
+Cette compétence s’exerce dans un contexte où les livrables doivent rester adaptables, testés et alignés avec les priorités métiers.`,
     proofs: [
       {
-        story: "Atterrissage incréments en accord avec Support/CSM (impacts clients).",
+        story: `Mise en place d’itérations incrémentales sur le module Contentieux : découpage des livrables (phases, formulaires, reporting) et suivi via Jira.`,
         projectSlug: 'crm-contentieux',
-        result: "Mises en prod sans surprise et décisions partagées.",
-        valueAdded: "Rituels courts de synchro + pré-release."
+        result: `Livraison continue sans rupture fonctionnelle et forte satisfaction du service juridique.`,
+        valueAdded: `Organisation pragmatique centrée sur la valeur et la stabilité du produit.`
+      },
+      {
+        story: `Coordination avec les équipes CSM et Delivery lors de la refonte Smartsheet : recueil des besoins, validation fonctionnelle, recette progressive.`,
+        projectSlug: 'integration-smartsheet',
+        result: `Meilleure compréhension des priorités et déploiement fluide côté utilisateurs.`,
+        valueAdded: `Capacité à traduire un besoin non technique en livrable exploitable.`
+      },
+      {
+        story: `Planification du refactor PDF sur plusieurs sprints : maintien des anciennes fonctionnalités tout en introduisant la nouvelle architecture.`,
+        projectSlug: 'facturation-documents-pdf-devis-facture',
+        result: `Zéro interruption de service pendant la refonte.`,
+        valueAdded: `Approche agile et structurée du refactoring, avec livraisons incrémentales.`
       }
     ],
-    results: "Moins de frictions inter-équipes.",
-    selfReview: "Mieux cadrer les ‘cut-off’ release.",
-    priority: 'moyenne',
-    acquisitionSpeed: 'normale',
-    evolution: "GO/NO-GO systématique et checklist de sortie.",
-    trainingsPlanned: ["Release management pragmatique"],
-    relatedProjects: ['crm-contentieux']
+    results: `Des projets livrés en continu, une meilleure priorisation des tâches et un alignement constant entre besoins métiers et contraintes techniques.`,
+    selfReview: `Très à l’aise dans l’organisation agile à échelle humaine. À perfectionner : formalisation des rituels et suivi de capacité.`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Approfondir l’usage des outils de pilotage (Jira, Confluence) pour capitaliser la connaissance et anticiper les risques projet.`,
+    trainingsPlanned: [
+      'Scrum avancé – Q3 2025',
+      'Agilité à l’échelle (SAFe) – Introduction'
+    ],
+    relatedProjects: [
+      'crm-contentieux',
+      'facturation-documents-pdf-devis-facture',
+      'integration-smartsheet'
+    ]
+  },
+  {
+    slug: 'communication-transverse',
+    name: 'Communication transverse & documentation',
+    type: 'soft',
+    level: 4,
+    definition: `Assurer la circulation claire et structurée de l’information entre les équipes techniques, commerciales et support. 
+Documenter les choix et processus pour garantir la compréhension collective et la continuité du savoir.`,
+    proofs: [
+      {
+        story: `Rédaction de la documentation technique sur Confluence pour les intégrations Smartsheet et HubSpot (schémas, flux, règles de gestion).`,
+        projectSlug: 'integration-smartsheet',
+        result: `Documentation claire, réutilisée par les CSM et les nouveaux développeurs.`,
+        valueAdded: `Pédagogie et sens de la transmission dans des contextes inter-équipes.`
+      },
+      {
+        story: `Partage des schémas de données et diagrammes Miro du module Contentieux avec les juridiques pour validation métier.`,
+        projectSlug: 'crm-contentieux',
+        result: `Validation rapide du modèle et alignement technique/fonctionnel.`,
+        valueAdded: `Capacité à vulgariser la technique et à créer un langage commun.`
+      },
+      {
+        story: `Participation à la documentation interne sur la qualité du code (standards Laravel, conventions de commit).`,
+        projectSlug: 'architecture-backend-laravel',
+        result: `Amélioration de la cohérence des contributions et onboarding facilité.`,
+        valueAdded: `Esprit collaboratif et souci de la lisibilité pour les pairs.`
+      }
+    ],
+    results: `Une communication fluide entre métiers et technique, et une documentation qui devient un levier d’autonomie plutôt qu’une contrainte.`,
+    selfReview: `Bonne capacité à documenter et vulgariser. Prochain pas : structurer davantage la traçabilité des décisions.`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Formaliser un “guide développeur” interne et améliorer la communication visuelle (diagrammes, documentation vivante).`,
+    trainingsPlanned: [
+      'Technical Writing for Developers',
+      'Confluence Advanced Templates'
+    ],
+    relatedProjects: [
+      'integration-smartsheet',
+      'crm-contentieux',
+      'architecture-backend-laravel'
+    ]
+  },
+  {
+    slug: 'rigueur-fiabilite',
+    name: 'Rigueur & fiabilité',
+    type: 'soft',
+    level: 4,
+    definition: `Travailler avec précision, anticiper les erreurs et garantir la cohérence des livrables dans le temps. 
+Cette compétence se traduit par un souci constant du détail et par la recherche de solutions robustes plutôt que rapides.`,
+    proofs: [
+      {
+        story: `Vérifications systématiques sur les PDF et contrôles de cohérence des données avant déploiement.`,
+        projectSlug: 'facturation-documents-pdf-devis-facture',
+        result: `Aucune anomalie en production depuis la refonte.`,
+        valueAdded: `Approche qualité intégrée dès la conception, sans attendre la recette.`
+      },
+      {
+        story: `Validation croisée des règles métiers sur les phases de litige avec le service juridique.`,
+        projectSlug: 'crm-contentieux',
+        result: `Zéro incohérence détectée sur les statuts et dates critiques.`,
+        valueAdded: `Sens du contrôle et rigueur dans la validation fonctionnelle.`
+      },
+      {
+        story: `Audit et correction des anomalies de synchronisation entre CRM et Smartsheet avant mise en production.`,
+        projectSlug: 'integration-smartsheet',
+        result: `Taux d’erreur divisé par 5 sur les échanges API.`,
+        valueAdded: `Fiabilité et vérification avant livraison, même sous contrainte de temps.`
+      }
+    ],
+    results: `Des livrables stables, vérifiés et conformes, renforçant la confiance entre R&D et métiers.`,
+    selfReview: `Très rigoureux et fiable, avec une attention soutenue aux détails. À équilibrer avec plus de délégation et de capitalisation.`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Continuer à fiabiliser les workflows via des tests automatisés et des contrôles qualité en amont.`,
+    trainingsPlanned: [
+      'Test Driven Development – Q4 2025',
+      'Quality Mindset & Peer Review'
+    ],
+    relatedProjects: [
+      'facturation-documents-pdf-devis-facture',
+      'crm-contentieux',
+      'integration-smartsheet'
+    ]
+  },
+  {
+    slug: 'autonomie-responsabilisation',
+    name: 'Autonomie & responsabilisation',
+    type: 'soft',
+    level: 5,
+    definition: `Prendre en charge un sujet de bout en bout : analyse, conception, développement, recette et documentation. 
+Cette compétence illustre la confiance accordée et la capacité à livrer des résultats fiables sans supervision constante.`,
+    proofs: [
+      {
+        story: `Développement complet du module Contentieux : schéma de données, backend, règles de visibilité et formulaires dynamiques.`,
+        projectSlug: 'crm-contentieux',
+        result: `Livrable fonctionnel livré sans dépendance directe ni retouche majeure.`,
+        valueAdded: `Autonomie technique et sens du résultat dans un cadre complexe.`
+      },
+      {
+        story: `Refonte du tableau de bord des impayés sans spécifications formelles, à partir des attentes métiers recueillies en direct.`,
+        projectSlug: 'tableau-suivi-impayes',
+        result: `Solution opérationnelle et adoptée par la Finance.`,
+        valueAdded: `Capacité à cadrer et livrer un besoin métier sans dépendance hiérarchique.`
+      },
+      {
+        story: `Mise en place du connecteur Smartsheet : exploration API, création des webhooks, configuration OAuth2 et validation complète.`,
+        projectSlug: 'integration-smartsheet',
+        result: `Livraison en autonomie totale et documentation complète sur Confluence.`,
+        valueAdded: `Proactivité et auto-apprentissage sur un sujet non maîtrisé initialement.`
+      }
+    ],
+    results: `Autonomie totale sur les projets structurants du CRM, avec des livrables complets, testés et documentés.`,
+    selfReview: `Autonomie forte, mais nécessité de continuer à partager plus tôt les avancées pour favoriser l’intelligence collective.`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Trouver le bon équilibre entre autonomie et collaboration, et coacher à terme d’autres développeurs sur ces modules.`,
+    trainingsPlanned: [
+      'Leadership technique – 2026',
+      'Gestion du temps & priorisation avancée'
+    ],
+    relatedProjects: [
+      'crm-contentieux',
+      'integration-smartsheet',
+      'tableau-suivi-impayes'
+    ]
+  },
+  {
+    slug: 'analyse-problemes',
+    name: 'Esprit d’analyse & résolution de problèmes',
+    type: 'soft',
+    level: 4,
+    definition: `Identifier rapidement la cause d’un problème et proposer une solution concrète, durable et mesurable. 
+Cette compétence se déploie dans des contextes où la complexité technique se mêle à la contrainte métier.`,
+    proofs: [
+      {
+        story: `Analyse et correction des problèmes de redondance dans les gabarits PDF, avec factorisation progressive.`,
+        projectSlug: 'facturation-documents-pdf-devis-facture',
+        result: `Suppression de 80 % du code dupliqué et fiabilité accrue.`,
+        valueAdded: `Capacité à diagnostiquer avant d’agir, et à prioriser la simplicité.`
+      },
+      {
+        story: `Diagnostic des incohérences de commandes entre offres pack et à la carte, puis mise en place de règles bloquantes.`,
+        projectSlug: 'offres-pack-upsell',
+        result: `Zéro erreur de facturation et base client homogène.`,
+        valueAdded: `Raisonnement logique et anticipation des scénarios d’erreur.`
+      },
+      {
+        story: `Refonte des requêtes SQL pour le tableau de bord des impayés, intégrant de multiples relations Eloquent.`,
+        projectSlug: 'tableau-suivi-impayes',
+        result: `Tableau plus précis et lisible, utilisé par la Finance et la Direction.`,
+        valueAdded: `Approche méthodique pour traduire un besoin métier en requêtes performantes.`
+      }
+    ],
+    results: `Des problèmes traités à la racine plutôt que contournés, avec une amélioration continue de la fiabilité des processus.`,
+    selfReview: `Analyse pertinente et rapide, parfois trop orientée technique — à compléter par davantage de feedback utilisateur.`,
+    priority: 'haute',
+    acquisitionSpeed: 'rapide',
+    evolution: `Renforcer l’analyse fonctionnelle en amont des projets et accompagner les équipes dans la résolution structurée des incidents.`,
+    trainingsPlanned: [
+      'Root Cause Analysis – Q2 2026',
+      'Problem-solving en environnement agile'
+    ],
+    relatedProjects: [
+      'facturation-documents-pdf-devis-facture',
+      'offres-pack-upsell',
+      'tableau-suivi-impayes'
+    ]
   }
 ];

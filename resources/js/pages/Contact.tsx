@@ -4,7 +4,7 @@ import { Container, Stack, Typography, Card, CardContent, Button, Link as MuiLin
 
 export default function Contact() {
   return (
-      <Container maxWidth="sm" sx={{ marginBottom: screen.height < 700 ? 2 : 23 }}>
+      <Container maxWidth="sm" sx={{ marginBottom: screen.height < 700 ? 2 : 26 }}>
         <Head title="Contact" />
         <Stack spacing={1.5} mt={4} mb={3} textAlign="center">
           <Typography variant="h4">Contact</Typography>

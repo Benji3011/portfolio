@@ -13,16 +13,16 @@ const EIL_TO_SKILL: Record<Competence['id'], Skill['slug'][]> = {
     'C.3':  ['data-modeling-sql'],               // Modéliser données/processus
     'C.4':  ['frontend-react-ts'],               // Prototyper & valider
     'C.5':  ['gestion-de-projet-agile'],         // Planifier/estimer/prioriser
-    'C.6':  ['ci-cd-qualite'],                   // Risques & qualité
+    'C.6':  ['code-quality-maintainability'],    // Risques & qualité
     'C.7':  ['data-modeling-sql'],               // Indicateurs & reporting
     'C.8':  ['collaboration-cross-team'],        // Animer l’équipe (rituels)
     'C.9':  ['architecture-backend-laravel'],    // Conception / architecture
-    'C.10': ['ci-cd-qualite'],                   // Tests unit/integration
+    'C.10': ['code-quality-maintainability'],    // Tests unit/integration
     'C.11': ['integration-apis'],                // Intégration services/API
-    'C.12': ['ci-cd-qualite'],                   // Automatisation CI/CD
+    'C.12': ['code-quality-maintainability'],    // Automatisation CI/CD
     'C.13': ['problem-solving'],                 // Perfs & sécurité (résolution)
     'C.14': ['data-modeling-sql'],               // Données & migrations
-    'C.15': ['ci-cd-qualite'],                   // Industrialisation/monitoring
+    'C.15': ['code-quality-maintainability'],    // Industrialisation/monitoring
     'C.16': ['documentation-transfert'],         // Documenter & transférer
     'C.17': ['problem-solving'],                 // Maintenance évolutive/corrective
     'C.18': ['communication-technique'],         // Veille & diffusion
@@ -32,7 +32,7 @@ type DeriveMode = 'max' | 'avg60_40';
 const clamp15 = (n: number): 1|2|3|4|5 => Math.max(1, Math.min(5, Math.round(n))) as 1|2|3|4|5;
 
 /**
- * Retourne tes skills “métier” avec .level bonifiés par les niveaux EIL mappés.
+ * Retourne skills “métier” avec .level bonifiés par les niveaux EIL mappés.
  * 'max' (défaut) = simple et lisible ; 'avg60_40' = moyenne pondérée (60% skill, 40% EIL).
  */
 export function deriveSkillsWithEIL(
