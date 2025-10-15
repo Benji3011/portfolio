@@ -15,8 +15,8 @@ export const projects: Project[] = [
     slug: "tableau-suivi-impayes",
     title: "Refonte du tableau de bord de suivi des impayés",
     summary: "Reconstruction complète du tableau de bord des impayés dans le CRM pour offrir une vision détaillée, hiérarchique et exploitable des montants dus. L’objectif : fiabiliser les données, identifier clairement qui doit agir et faciliter le pilotage des relances par service.",
-    tags: ["CRM", "Finance", "Reporting", "SQL", "Eloquent", "UX"],
-    tech: ["Laravel 10", "Eloquent ORM", "Blade", "Datatables", "SQL Joins", "Aggregation"],
+    tags: ["Finance", "Reporting", "UI/UX"],
+    tech: ["Laravel 10", "Eloquent ORM", "Blade", "Datatables", "SQL"],
     highlights: [
       "Passage d’un tableau statique à un tableau de bord interactif : clic sur un service pour afficher le détail des impayés associés (retard, amiable, IP…).",
       "Refonte des requêtes SQL en Eloquent pour agréger les informations provenant de plusieurs tables (factures, sociétés, litiges, utilisateurs).",
@@ -72,8 +72,8 @@ export const projects: Project[] = [
     slug: "facturation-documents-pdf-devis-facture",
     title: "Stabilisation et refonte du moteur PDF (Devis, Commandes, Factures)",
     summary: "Refonte complète du système de génération PDF du CRM pour fiabiliser les documents clients (devis, commandes, factures). Objectif : améliorer la maintenabilité du code Blade, optimiser la mise en page et garantir la cohérence visuelle de l’ensemble des documents légaux.",
-    tags: ["CRM", "Laravel", "PDF", "Refactor", "Maintenance", "UI/UX"],
-    tech: ["Laravel 10", "Blade", "DOMPDF", "Service Layer", "Queues", "Validation"],
+    tags: ["PDF", "Refactor", "Maintenance", "UI/UX"],
+    tech: ["Blade", "DOMPDF"],
     highlights: [
       "Factorisation complète des gabarits Blade : suppression des duplications et mutualisation des blocs communs (entêtes, totaux, mentions légales).",
       "Création d’un fichier maître contrôlant le rendu selon le contexte (devis, commande, facture).",
@@ -137,8 +137,8 @@ export const projects: Project[] = [
     slug: 'integration-hubspot',
     title: 'Refonte du connecteur HubSpot ↔ CRM',
     summary: `Modernisation complète du connecteur entre le CRM interne et HubSpot : refactor du code legacy, centralisation des appels API v3 et mise en place d’une sandbox d’intégration pour tester en conditions réelles sans impacter la production.`,
-    tags: ['API', 'Intégration', 'CRM', 'HubSpot', 'Sandbox', 'Laravel'],
-    tech: ['Laravel 10', 'HubSpot API v3', 'Jobs', 'Queues', 'Webhooks', 'OAuth 2.0'],
+    tags: ['API', 'Intégration', 'HubSpot', 'Sandbox'],
+    tech: ['Jobs', 'Queues', 'Webhooks'],
     highlights: [
       'Sandbox HubSpot reliée au CRM (tests réalistes hors production)',
       'Refactor complet du legacy en services, jobs et contrôleurs Laravel',
@@ -194,8 +194,8 @@ export const projects: Project[] = [
     slug: "crm-contentieux",
     title: "Module de pilotage des contentieux (CRM)",
     summary: "Conception et développement complet d’un module CRM dédié au suivi des litiges clients : formulaire dynamique, historisation des phases et automatisation des échéances. Le projet fiabilise la traçabilité juridique et réduit drastiquement le temps de saisie pour les équipes ADV et Juridique.",
-    tags: ["CRM", "Laravel", "Formulaire dynamique", "Workflow", "Data modeling", "Juridique"],
-    tech: ["Laravel 10", "Blade", "AJAX", "Eloquent ORM", "Migrations SQL", "Policies & Validation"],
+    tags: ["Formulaire dynamique", "Juridique"],
+    tech: ["Blade", "AJAX", "Eloquent ORM", "SQL"],
     highlights: [
       "Création du schéma de données complet (plus d’une dizaine de nouvelles tables : litiges, phases, coûts, états, historiques).",
       "Développement full-stack du formulaire dynamique avec règles conditionnelles et visibilité contextuelle selon le statut du litige.",
@@ -251,8 +251,7 @@ export const projects: Project[] = [
     slug: "offres-pack-upsell",
     title: "Sécurisation des offres packagées & pilotage des upsells",
     summary: "Mise en place d’un mécanisme de contrôle des offres commerciales dans le CRM pour éviter le mélange entre anciennes offres à la carte et nouvelles offres packagées. L’objectif était de fiabiliser la facturation, d’aider les commerciaux à identifier les clients à upseller et d’améliorer la cohérence globale des données de commande.",
-    tags: ["CRM", "Offres packagées", "Upsell", "Validation", "Règles métiers", "Laravel"],
-    tech: ["Laravel 10", "Blade", "Eloquent ORM", "Policies", "Validation front/back"],
+    tech: ["Blade", "Eloquent ORM"],
     highlights: [
       "Ajout d’une hiérarchie parent/enfant dans la table `orders` pour lier les anciennes commandes aux nouvelles offres.",
       "Implémentation de règles métier strictes empêchant la cohabitation d’offres incompatibles sur un même client.",
@@ -309,23 +308,8 @@ export const projects: Project[] = [
     title: "Intégration Smartsheet FMP ↔ CRM (webhooks + feuille Sous-traitants)",
     summary:
         "Mise en place d’un pont robuste entre le CRM et Smartsheet : création/activation de webhooks côté Smartsheet pour pousser des événements vers le CRM (affectations, statuts, bilans…), et intégration d’une nouvelle feuille FMP dédiée aux Sous-traitants afin d’automatiser les calculs de commissions via un mapping complet des produits/colonnes.",
-    tags: [
-      "Intégration",
-      "Smartsheet",
-      "Webhooks",
-      "Automation",
-      "FMP",
-      "Sous-traitants",
-      "Data Sync"
-    ],
-    tech: [
-      "Laravel 10",
-      "Smartsheet API v2",
-      "OAuth2",
-      "Jobs & Scheduler",
-      "HMAC verification",
-      "Postman"
-    ],
+    tags: ["Intégration", "Smartsheet", "API", "Sandbox"],
+    tech: ["Jobs", "Postman"],
     highlights: [
       "Webhooks Smartsheet → CRM : déclaration, activation, filtrage par colonnes, callbacks dédiés",
       "Vérification HMAC côté CRM et flux idempotents avec retries",

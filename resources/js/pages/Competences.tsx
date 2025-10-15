@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Container, Grid, Card, CardContent, Stack, Typography, LinearProgress, Button } from '@mui/material';
-import { Link } from '@inertiajs/react';
 import { skills as rawSkills } from '@/data/skills';
 import { competences } from '@/data/competences';
 import { deriveSkillsWithEIL } from '@/lib/skills-derived';

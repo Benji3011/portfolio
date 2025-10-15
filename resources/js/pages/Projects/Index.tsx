@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo, useState, useEffect } from 'react';
-import { Link } from '@inertiajs/react';
+import {Head, Link} from '@inertiajs/react';
 import Grid from '@mui/material/Grid';
 import {
     Container, Typography, Stack, TextField, FormControl,
@@ -105,6 +105,7 @@ export default function ProjectsIndex() {
 
     return (
         <Container maxWidth="lg">
+            <Head title="Réalisations" />
             <Stack spacing={1.5} mt={4} mb={3}>
                 <Typography variant="h4">Mes réalisations</Typography>
                 <Typography variant="body2" color="text.secondary">
