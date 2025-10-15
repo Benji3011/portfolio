@@ -251,6 +251,7 @@ export const projects: Project[] = [
     slug: "offres-pack-upsell",
     title: "Sécurisation des offres packagées & pilotage des upsells",
     summary: "Mise en place d’un mécanisme de contrôle des offres commerciales dans le CRM pour éviter le mélange entre anciennes offres à la carte et nouvelles offres packagées. L’objectif était de fiabiliser la facturation, d’aider les commerciaux à identifier les clients à upseller et d’améliorer la cohérence globale des données de commande.",
+    tags: ["Upsell"],
     tech: ["Blade", "Eloquent ORM"],
     highlights: [
       "Ajout d’une hiérarchie parent/enfant dans la table `orders` pour lier les anciennes commandes aux nouvelles offres.",
