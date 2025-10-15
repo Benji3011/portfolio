@@ -4,9 +4,8 @@ import { Box, Container, Link, Typography, Stack, IconButton, Divider,  } from '
 import MailIcon from '@mui/icons-material/AlternateEmail';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import GitLabIcon from '@mui/icons-material/Construction'; // placeholder icône
 import DescriptionIcon from '@mui/icons-material/Description';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import {GithubIcon} from "lucide-react";
 
 export default function Footer() {
     return (
@@ -58,7 +57,7 @@ export default function Footer() {
                             >
                                 <IconButton
                                     component={Link}
-                                    href="https://www.linkedin.com/in/ton-profil"
+                                    href="https://www.linkedin.com/in/benjaminboudry/"
                                     target="_blank"
                                     rel="noreferrer"
                                     aria-label="LinkedIn"
@@ -68,13 +67,13 @@ export default function Footer() {
                                 </IconButton>
                                 <IconButton
                                     component={Link}
-                                    href="https://gitlab.com/ton-espace"
+                                    href="https://github.com/Benji3011"
                                     target="_blank"
                                     rel="noreferrer"
-                                    aria-label="GitLab"
+                                    aria-label="GitHub"
                                     sx={{ '&:hover': { transform: 'translateY(-2px)' }, transition: 'all .2s' }}
                                 >
-                                    <GitLabIcon />
+                                    <GithubIcon />
                                 </IconButton>
                                 <IconButton
                                     component={Link}
@@ -85,14 +84,6 @@ export default function Footer() {
                                     sx={{ '&:hover': { transform: 'translateY(-2px)' }, transition: 'all .2s' }}
                                 >
                                     <DescriptionIcon />
-                                </IconButton>
-                                <IconButton
-                                    component={Link}
-                                    href="/Benjamin_Boudry.vcf"
-                                    aria-label="vCard"
-                                    sx={{ '&:hover': { transform: 'translateY(-2px)' }, transition: 'all .2s' }}
-                                >
-                                    <AccountBoxIcon />
                                 </IconButton>
                             </Stack>
                         </Grid>
